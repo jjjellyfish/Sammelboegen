@@ -83,10 +83,10 @@ ges_janein <- function(df){
   c <- sum(a+b)
   df$freq_ges <- as.numeric(c(a,b,c, NA, NA))
   df <- df %>% 
-  mutate_at(vars(contains('freq')), ~ sprintf("%.1f", round(., 1)))
+  mutate_at(vars(contains('freq')), ~ sprintf("%.1f", round(., 1))) %>% 
+  mutate_all(na_if,'NA')
   return(df)
 }
-
 
 #### mehr Ausprägungen ####
 tbl_mehrf <-function(x) {
@@ -106,7 +106,6 @@ tbl_mehrf <-function(x) {
   tbl1
 }
 
-
 ges_mehrf <- function(df){
   # Funktion erstellt gesamt-Spalten [n] & [%] für mehrere Auspärgungen
   df <- df %>% mutate(`Ges. [n]` = rowSums(across(contains('[n]'))))
@@ -116,10 +115,6 @@ ges_mehrf <- function(df){
   df$`Ges. [%]`[(nrow(df)-2)] <- 100.0
   df
 }
-
-
-
-
 
 #### Sonstige ####
 # Wrapper-Funktion, um die decimal marks nicht jedes mal separat anzugeben 
