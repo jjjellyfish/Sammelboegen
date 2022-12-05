@@ -19,6 +19,8 @@ knitr::opts_chunk$set(echo = FALSE)
 #tinytex::install_tinytex() #notwendig, wenn keine LateX-Distro oder für Update
 
 library(tidyverse)
+library(janitor)
+
 library(psych)
 library(readxl)
 library(tinytex) # Notwendig damit LaTeX-Packages richtig installiert werden
@@ -46,32 +48,31 @@ u9 <- read.csv('u9.csv')
 
 ```{r functions, include=FALSE}
 #### ja /nein ####
+rownames_janein <- c('ja', 'nein', 'valides n', 'fehlend', 'gesamt n')
+
 tbl_janein <-function(x) {
   # Verarbeitet Variable mit zwei Ausprägungen und gibt Tabelle mit absoluten und 
   # relativen Zahlen aus
   x[x==0] <- NA
-  tbl1 <- as.data.frame(table(x, useNA='always')) 
-  tbl2 <- as.data.frame(round(prop.table(table(x)),3)*100)
-  #tbl2$Freq <- paste(tbl2$Freq, '%') #doch kein %-Zeichen
-  tbl2 <- rbind(tbl2, NA)
-  tbl1 <- cbind(tbl1, tbl2[2])
-  # zusätzliche Zeilen einfügen
-  tbl1[4,] <- tbl1[3,] #NAs verschieben
-  tbl1[3,2:3] <- colSums(tbl1[1:2,2:3]) #valides n
-  tbl1[5,2] <- sum(tbl1[3:4,2]) #gesamt n
-  tbl1
+  tbl <- janitor::tabyl(x, show_na = TRUE) %>% 
+    mutate(freq=valid_percent*100) %>% 
+    select(-percent, -valid_percent)
+  tbl[4,] <- tbl[3,] #NAs verschieben
+  tbl[3,2:3] <- colSums(tbl[1:2,2:3]) #valides n
+  tbl[5,2] <- sum(tbl[3:4,2]) #gesamt n
+  return(tbl)
 }
-
-rownames_janein <- c('ja', 'nein', 'valides n', 'fehlend', 'gesamt n')
 
 ges_janein <- function(df){
   # Funktion erstellt gesamt-Spalten [n] & [%]
-  df <- df %>% mutate(`Ges. [n]` = rowSums(across(contains('[n]'))))
-  a <- df$`Ges. [n]`[1] / df$`Ges. [n]`[3]*100
-  b <- df$`Ges. [n]`[2] / df$`Ges. [n]`[3]*100
+  df <- df %>%  mutate(n_ges = rowSums(across(contains('n'))))
+  a <- df$n_ges[1] / df$n_ges[3]*100
+  b <- df$n_ges[2] / df$n_ges[3]*100
   c <- sum(a+b)
-  df$`Ges. [%]` <- as.numeric(c(a,b,c, NA, NA))
-  df
+  df$freq_ges <- as.numeric(c(a,b,c, NA, NA))
+  df <- df %>% 
+  mutate_at(vars(contains('freq')), ~ sprintf("%.1f", round(., 1)))
+  return(df)
 }
 
 
@@ -117,6 +118,11 @@ kbl2 = function(...) {
 # NAs werden nicht in den Tabellen dargestellt
 options(knitr.kable.NA = '')
 
+# erstelle String für Tebellen-alignment (alle ab zweiter Splate rechtsbündig)
+align_string <- function(df) {
+  paste('l', paste(rep('r', (length(df)-1)), collapse=''), sep='')
+}
+
 # kontinuierliche Variable
 tbl_kont <-function(x) {
   tbl1 <- describe(x)
@@ -141,20 +147,20 @@ Inspektion (auf morphologische Auffälligkeiten) durchgeführt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u2$F9)
 tbl2 <- tbl_janein(u3$F9)
-
 tbl <- bind_cols(tbl1, tbl2[2:3])
-#tbl$gesamt <- tbl[2] + tbl[4] + tbl[6]
-
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]')
 
 tbl <- ges_janein(tbl)
 
-tbl %>% kbl2(booktabs = T, digits=1, centering=F) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 3))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U2'=2, 'U3'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
-  
+
+
   \linebreak
 
 Prüfung im durchfallenden Licht durchgeführt?
