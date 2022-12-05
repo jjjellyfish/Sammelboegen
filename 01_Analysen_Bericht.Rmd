@@ -969,22 +969,16 @@ Hinweise entweder in der Anamnese oder in der Orientierenden Beurteilung der Ent
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 u5 <- u5 %>% mutate(either=case_when(F12==1 | F13 == 1 ~ 1,   TRUE ~ 2))
 tbl1 <- tbl_janein(u5$either)
-
 u6 <- u6 %>% mutate(either=case_when(F14==1 | F15 == 1 ~ 1,   TRUE ~ 2))
 tbl2 <- tbl_janein(u6$either)
-
 u7 <- u7 %>% mutate(either=case_when(F12==1 | F13 == 1 ~ 1,   TRUE ~ 2))
 tbl3 <- tbl_janein(u7$either)
-
 u7a <- u7a %>% mutate(either=case_when(F21==1 | F22 == 1 ~ 1,   TRUE ~ 2))
 tbl4 <- tbl_janein(u7a$either)
-
 u8 <- u8 %>% mutate(either=case_when(F32==1 | F33 == 1 ~ 1,   TRUE ~ 2))
 tbl5 <- tbl_janein(u8$either)
-
 u9 <- u9 %>% mutate(either=case_when(F21==1 | F22 == 1 ~ 1,   TRUE ~ 2))
 tbl6 <- tbl_janein(u9$either)
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
@@ -1013,38 +1007,34 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 u5 <- u5 %>% mutate(either=case_when(F12==1 & F13 == 1 ~ 1,   TRUE ~ 2))
 tbl1 <- tbl_janein(u5$either)
-
 u6 <- u6 %>% mutate(either=case_when(F14==1 & F15 == 1 ~ 1,   TRUE ~ 2))
 tbl2 <- tbl_janein(u6$either)
-
 u7 <- u7 %>% mutate(either=case_when(F12==1 & F13 == 1 ~ 1,   TRUE ~ 2))
 tbl3 <- tbl_janein(u7$either)
-
 u7a <- u7a %>% mutate(either=case_when(F21==1 & F22 == 1 ~ 1,   TRUE ~ 2))
 tbl4 <- tbl_janein(u7a$either)
-
 u8 <- u8 %>% mutate(either=case_when(F32==1 & F33 == 1 ~ 1,   TRUE ~ 2))
 tbl5 <- tbl_janein(u8$either)
-
 u9 <- u9 %>% mutate(either=case_when(F21==1 & F22 == 1 ~ 1,   TRUE ~ 2))
 tbl6 <- tbl_janein(u9$either)
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
+
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1061,20 +1051,21 @@ tbl6 <- tbl_janein(u9$F21[u9$F22==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1091,22 +1082,24 @@ tbl6 <- tbl_janein(u9$F22[u9$F21==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
+
 
 #### 3.6.5	Durchführung von Sprachberatung
 
@@ -1122,20 +1115,21 @@ tbl6 <- tbl_janein(u9$F23)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1152,20 +1146,21 @@ tbl6 <- tbl_janein(u9$F23[u9$F21==1 | u9$F22==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1182,20 +1177,21 @@ tbl6 <- tbl_janein(u9$F23[u9$F21==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1212,20 +1208,21 @@ tbl6 <- tbl_janein(u9$F23[u9$F22==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1242,26 +1239,25 @@ tbl6 <- tbl_janein(u9$F23[u9$F21==2 & u9$F22==2])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
   \linebreak
-
-
 
 
 #### 3.6.6	Diagnostische und therapeutische Maßnahmen
@@ -1278,22 +1274,21 @@ tbl6 <- tbl_janein(u9$F24)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
-# absolute Häufigkeiten
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
-# relative Häufigkeiten
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1311,22 +1306,21 @@ tbl6 <- tbl_janein(u9$F24[u9$F21==1 | u9$F22==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
-# absolute Häufigkeiten
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
-# relative Häufigkeiten
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1343,22 +1337,21 @@ tbl6 <- tbl_janein(u9$F24[u9$F21==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
-# absolute Häufigkeiten
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
-# relative Häufigkeiten
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1374,22 +1367,21 @@ tbl6 <- tbl_janein(u9$F24[u9$F22==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
-# absolute Häufigkeiten
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
-# relative Häufigkeiten
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1406,22 +1398,21 @@ tbl6 <- tbl_janein(u9$F24[u9$F21==2 & u9$F22==2])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
-# absolute Häufigkeiten
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
-# relative Häufigkeiten
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1716,23 +1707,22 @@ tbl8 <- tbl_janein(u8$F5_jn)
 tbl9 <- tbl_janein(u9$F5_jn)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3], tbl7[2:3], tbl8[2:3], tbl9[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]','U4 [n]','U4 [%]',
-                'U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
+#tbl$x <- rownames_janein
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 tbl$Antwort <- c(">= 1 Themen", "keine Themen", "valides n", "fehlend", "gesamt n" )
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c(">= 1 Themen", "keine Themen", "valides n")) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1774,13 +1764,13 @@ tbl$Antwort[(nrow(tbl)-2):nrow(tbl)] <- c("valides n", "fehlend", "gesamt n")
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
   kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
   kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
-  row_spec(5, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+  row_spec(4, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(!Antwort %in% c("fehlend", "gesamt n")) %>% 
   kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
   kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
-  row_spec(5, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+  row_spec(4, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
 
@@ -1800,21 +1790,21 @@ tbl9 <- tbl_janein(u9$F1)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3], tbl7[2:3], tbl8[2:3], tbl9[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]','U4 [n]','U4 [%]',
-                'U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
-  filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  filter(Antwort %in% c("ja", "nein", "valides n")) %>% 
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -1894,6 +1884,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
   row_spec(5, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
+
 #### 4.2.2	Dokumentation von erweitertem Beratungsbedarf 
 
  \newline
@@ -1902,7 +1893,7 @@ Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt �
 
 ```
 
-**Die Frage ist bereits unter 3.7.2 ausgeweret**
+**Die Frage ist bereits unter 3.7.2 ausgewertet**
 
 
 #### 4.2.3	Dokumentation von Auffälligkeiten zur Beobachtung
@@ -1923,21 +1914,21 @@ tbl9 <- tbl_janein(u9$F6)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3], tbl7[2:3], tbl8[2:3], tbl9[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]','U4 [n]','U4 [%]',
-                'U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
-  filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  filter(Antwort %in% c("ja", "nein", "valides n")) %>% 
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -2045,21 +2036,20 @@ tbl9 <- tbl_janein(u9$F7)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3], tbl7[2:3], tbl8[2:3], tbl9[2:3])
 
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]','U4 [n]','U4 [%]',
-                'U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
-  filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  filter(Antwort %in% c("ja", "nein", "valides n")) %>% 
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
