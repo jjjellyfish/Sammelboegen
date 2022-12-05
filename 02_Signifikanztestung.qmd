@@ -1,0 +1,491 @@
+---
+title: "Signifikanztestung für Angaben aus dem Sammelbogen"
+author: "grb"
+format: 
+  html:
+   embed-resources: true
+   toc: true
+   toc-location: left
+   toc-depth: 6
+project: 
+  type: default
+  execute-dir: project
+preview:
+  port: 4200
+  browser: true
+---
+
+```{r}
+#| label: load packages
+#| include: false
+
+library(tidyverse)
+
+u4 <- read.csv('O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/01_Data/u4.csv')
+u5 <- read.csv('O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/01_Data/u5.csv')
+u6 <- read.csv('O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/01_Data/u6.csv')
+u7 <- read.csv('O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/01_Data/u7.csv')
+u7a <- read.csv('O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/01_Data/u7a.csv')
+u8 <- read.csv('O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/01_Data/u8.csv')
+u9 <- read.csv('O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/01_Data/u9.csv')
+
+```
+
+### AUGEN
+
+#### 3.1.3.2 Transilluminationsauffälligkeiten
+
+Feststellung von Transillumiationsunterschieden **mit vs. ohne** binokulares Autorefraktometer
+
+```{r}
+### Datensatz im Long-Format bilden
+tmp1 <- u4 %>% mutate(u='u4') %>% select(u, F9:F11)
+tmp2 <- u5 %>% mutate(u='u5') %>% select(u, F9:F11)
+tmp3 <- u6 %>% mutate(u='u6') %>% select(u, F9:F11)
+tmp4 <- u7 %>% mutate(u='u7') %>% select(u, F9:F11)
+tmp <- bind_rows(tmp1, tmp2, tmp3, tmp4)
+
+### Fallselektion: Nur auswerten, wenn ein Brückner-Test durchgeführt wurde. + Missings entfernen
+tmp <- tmp %>% filter(F9 == 1) %>%  na_if(., 0)
+
+## Zellbesetzung testen
+table(tmp$F10, tmp$F11) #Chi-square ok
+
+#F10=binokulares Autorefraktometer: ja/nein
+#F11=Feststellung von Auffälligkeit: ja/nein
+
+# predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+gmodels::CrossTable(tmp$F10, tmp$F11, chisq=TRUE, fisher=TRUE, expected=TRUE)
+```
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(F10, F11) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(F10, F11) %>% 
+  select(-F10)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package
+1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
+
+
+#### 3.1.4.1 Häufigkeit der Durchführung
+
+##### Hornhautreflexbildchen 
+Unterschied in der Häufigkeit der Verwendung des binokularen Autorefraktometers zwischen U-Untersuchungen (nur wenn Hornhautreflexbildchen durchgeführt)
+```{r}
+### Datensatz im Long-Format bilden
+tmp1 <- u7a %>% mutate(u='u7a') %>% select(u, F13:F14)
+tmp2 <- u8 %>% mutate(u='u8') %>% select(u, F13:F14)
+tmp3 <- u9 %>% mutate(u='u9') %>% select(u, F13:F14)
+tmp <- bind_rows(tmp1, tmp2, tmp3)
+
+### Fallselektion: Nur auswerten, wenn ein Hornhautreflexbildchen durchgeführt wurde. + Missings entfernen
+tmp <- tmp %>% filter(F13 == 1) %>% na_if(., 0)
+
+## Zellbesetzung testen
+table(tmp$u, tmp$F14) #Chi-square ok
+
+#u=U-Untersuchung
+#F14=binokulares Autorefraktometer: ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$u, tmp$F14, chisq=TRUE, expected=TRUE)
+```
+
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(u, F14) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(u, F14) %>% 
+  select(-u)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package: geht nur für 2x2-Tabellen
+# 1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
+
+##### Stereo-Test
+Unterschied in der Häufigkeit der Durchführung zwischen U-Untersuchungen
+```{r}
+### Datensatz im Long-Format bilden
+tmp1 <- u7a %>% mutate(u='u7a') %>% select(u, F16)
+tmp2 <- u8 %>% mutate(u='u8') %>% select(u, F16)
+tmp3 <- u9 %>% mutate(u='u9') %>% select(u, F16)
+tmp <- bind_rows(tmp1, tmp2, tmp3)
+
+### Missings entfernen
+tmp <- tmp %>% na_if(., 0)
+
+## Zellbesetzung testen
+table(tmp$u, tmp$F16) #Chi-square ok
+
+#u=U-Untersuchung
+#F16=Stereo-Test durchgeführt : ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$u, tmp$F16, chisq=TRUE, expected=TRUE)
+```
+
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(u, F16) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(u, F16) %>% 
+  select(-u)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package: geht nur für 2x2-Tabellen
+mosaic::oddsRatio(as.matrix(tmp2[1:2, 1:2]), conf.level = 0.95)
+```
+
+Unterschied in der Häufigkeit der Verwendung des binokularen Autorefraktometers zwischen U-Untersuchungen (nur wenn Stereo-Test durchgeführt)
+```{r}
+### Datensatz im Long-Format bilden
+tmp1 <- u7a %>% mutate(u='u7a') %>% select(u, F16:F17)
+tmp2 <- u8 %>% mutate(u='u8') %>% select(u, F16:F17)
+tmp3 <- u9 %>% mutate(u='u9') %>% select(u, F16:F17)
+tmp <- bind_rows(tmp1, tmp2, tmp3)
+
+### Fallselektion: Nur auswerten, wenn Stereo-Test durchgeführt wurde. + Missings entfernen
+tmp <- tmp %>% filter(F16 == 1) %>% na_if(., 0)
+
+## Zellbesetzung testen
+table(tmp$u, tmp$F17) #Chi-square ok
+
+#u=U-Untersuchung
+#F17=binokulares Autorefraktometer: ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$u, tmp$F17, chisq=TRUE, expected=TRUE)
+```
+
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(u, F17) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(u, F17) %>% 
+  select(-u)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package: geht nur für 2x2-Tabellen
+mosaic::oddsRatio(as.matrix(tmp2)[1:2,1:2], conf.level = 0.95)
+```
+
+
+##### nonverbaler Formenwiedererkennungstest 
+Unterschied in der Häufigkeit der Durchführung zwischen U-Untersuchungen
+```{r}
+### Datensatz im Long-Format bilden
+tmp1 <- u7a %>% mutate(u='u7a') %>% select(u, F19)
+tmp2 <- u8 %>% mutate(u='u8') %>% select(u, F19)
+tmp3 <- u9 %>% mutate(u='u9') %>% select(u, F19)
+tmp <- bind_rows(tmp1, tmp2, tmp3)
+
+### Missings entfernen
+tmp <- tmp %>% na_if(., 0)
+
+## Zellbesetzung testen
+table(tmp$u, tmp$F19) #Chi-square ok
+
+#u=U-Untersuchung
+#F19=monokulare Prüfung mittels nonverbalem Formenwiedererkennungstest durchgeführt : ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$u, tmp$F19, chisq=TRUE, expected=TRUE)
+```
+
+
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(u, F19) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(u, F19) %>% 
+  select(-u)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package: geht nur für 2x2-Tabellen
+# 1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
+
+
+#### 3.1.4.2	Häufigkeit der Feststellung von Auffälligkeiten
+
+##### Hornhautreflexbildchen 
+Unterschied in der Häufigkeit der Feststellung von Auffälligkeiten mit und ohne des binokulares Autorefraktometer (nur wenn Hornhautreflexbildchen durchgeführt)
+```{r}
+### Datensatz im Long-Format bilden
+tmp1 <- u7a %>% mutate(u='u7a') %>% select(u, F13:F15)
+tmp2 <- u8 %>% mutate(u='u8') %>% select(u, F13:F15)
+tmp3 <- u9 %>% mutate(u='u9') %>% select(u, F13:F15)
+tmp <- bind_rows(tmp1, tmp2, tmp3)
+
+### Fallselektion: Nur auswerten, wenn ein Hornhautreflexbildchen durchgeführt wurde. + Missings entfernen
+tmp <- tmp %>% filter(F13 == 1) %>% na_if(., 0)
+
+## Zellbesetzung testen
+table(tmp$F14, tmp$F15) #Chi-square ok
+
+#F14=binokulares Autorefraktometer: ja/nein
+#F15=Auffälligkeit: ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$F14, tmp$F15, chisq=TRUE, expected=TRUE)
+```
+
+
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(F14, F15) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(F14, F15) %>% 
+  select(-F14)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package
+1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
+
+##### Stereo-Test
+Unterschied in der Häufigkeit der Feststellung von Auffälligkeiten mit und ohne des binokulares Autorefraktometer (nur wenn Streo-Test durchgeführt)
+```{r}
+### Datensatz im Long-Format bilden
+tmp1 <- u7a %>% mutate(u='u7a') %>% select(u, F16:F18)
+tmp2 <- u8 %>% mutate(u='u8') %>% select(u, F16:F18)
+tmp3 <- u9 %>% mutate(u='u9') %>% select(u, F16:F18)
+tmp <- bind_rows(tmp1, tmp2, tmp3)
+
+### Fallselektion: Nur auswerten, wenn Stereo-Test durchgeführt wurde. + Missings entfernen
+tmp <- tmp %>% filter(F16 == 1) %>% na_if(., 0)
+
+## Zellbesetzung testen
+table(tmp$F17, tmp$F18) #Chi-square ok
+
+#F17=binokulares Autorefraktometer: ja/nein
+#F18=Auffälligkeit: ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$F17, tmp$F18, chisq=TRUE, expected=TRUE)
+```
+
+
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(F17, F18) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(F17, F18) %>% 
+  select(-F17)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package
+1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
+
+
+##### nonverbaler Formenwiedererkennungstest 
+Unterschied in der Häufigkeit der Feststellung von Auffälligkeiten zwischen U-Untersuchungen
+```{r}
+### Datensatz im Long-Format bilden
+tmp1 <- u7a %>% mutate(u='u7a') %>% select(u, F19:F20)
+tmp2 <- u8 %>% mutate(u='u8') %>% select(u, F19:F20)
+tmp3 <- u9 %>% mutate(u='u9') %>% select(u, F19:F20)
+tmp <- bind_rows(tmp1, tmp2, tmp3)
+
+### Missings entfernen
+tmp <- tmp %>% filter(F19 == 1) %>% na_if(., 0)
+
+## Zellbesetzung testen
+table(tmp$u, tmp$F20) #Chi-square ok
+
+#u=U-Untersuchung
+#F19=monokulare Prüfung mittels nonverbalem Formenwiedererkennungstest durchgeführt : ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$u, tmp$F20, chisq=TRUE, expected=TRUE)
+```
+
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(u, F20) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(u, F20) %>% 
+  select(-u)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package
+# 1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
+
+
+### HÖREN
+
+#### 3.2.2.4	Häufigkeit von Überweisungen
+--> Daten aus dem Elternfragebogen
+
+
+### SPRACH- & SPRECHSTÖRUNGEN
+
+#### 3.5.2	Hinweise auf Sprach- und Sprechstörungen
+Unterschied in der Häufigkeit der Feststellung von Hinweisen auf Sprach- und Sprechstörungen **in der Anamnese** zwischen U-Untersuchungen
+```{r}
+### Datensatz im Long-Format bilden
+tmp1 <- u5 %>% mutate(u='u5') %>% select(u, 'ana' = F12, 'obe'= F13)
+tmp2 <- u6 %>% mutate(u='u6') %>% select(u, 'ana' = F14, 'obe'= F15)
+tmp3 <- u7 %>% mutate(u='u7') %>% select(u, 'ana' = F12, 'obe'= F13)
+tmp4 <- u7a %>% mutate(u='u7a') %>% select(u,'ana'= F21, 'obe'= F22)
+tmp5 <- u8 %>% mutate(u='u8') %>% select(u,  'ana' = F32, 'obe'= F33)
+tmp6 <- u9 %>% mutate(u='u9') %>% select(u, 'ana' = F21, 'obe'= F22)
+tmp <- bind_rows(tmp1, tmp2, tmp3, tmp4, tmp5, tmp6)
+
+### Missings entfernen
+tmp <- tmp %>% na_if(., 0)
+
+## Zellbesetzung testen
+table(tmp$u, tmp$ana) #Chi-square ok
+
+#u=U-Untersuchung
+#ana=Auffälligkeite im Rahmen der Anamnese : ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$u, tmp$ana, chisq=TRUE, expected=TRUE)
+```
+
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(u, ana) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(u, ana) %>% 
+  select(-u)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package
+# 1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
+
+
+###### Odds Ratios: nur U7 bis U9
+```{r}
+tmp2 <- tmp %>% 
+  select(u, ana) %>% 
+  filter(!u %in% c('u5', 'u6')) %>%
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(u, ana) %>% 
+  select(-u)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package
+# 1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
+
+Unterschied in der Häufigkeit der Feststellung von Hinweisen auf Sprach- und Sprechstörungen **in der Orientierenden Beurteilung der Entwicklung** zwischen U-Untersuchungen
+```{r}
+## Zellbesetzung testen
+table(tmp$u, tmp$obe) #Chi-square ok
+
+#u=U-Untersuchung
+#ana=Auffälligkeite im Rahmen der OBE : ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$u, tmp$obe, chisq=TRUE, expected=TRUE)
+```
+
+###### Odds Ratios: nur U7 bis U9
+```{r}
+tmp2 <- tmp %>% 
+  select(u, obe) %>% 
+  filter(!u %in% c('u5', 'u6')) %>%
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(u, obe) %>% 
+  select(-u)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package
+# 1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
+
+
+Unterschied in der Häufigkeit der Feststellung von Hinweisen auf Sprach- und Sprechstörungen **zwischen Anamnese und der Orientierenden Beurteilung der Entwicklung** insgesamt
+```{r}
+tmp <- pivot_longer(tmp, cols=c('ana', 'obe'), names_to='stelle')
+
+## Zellbesetzung testen
+table(tmp$stelle, tmp$value) #Chi-square ok
+
+#stelle=Wo wird Auffälligkeit festgestellt?
+#value=Auffälligkeite: ja/nein
+
+# predictor, outcome --> Reihenfolge ist wichtig
+gmodels::CrossTable(tmp$stelle, tmp$value, chisq=TRUE, expected=TRUE)
+```
+
+
+###### Odds Ratios
+```{r}
+tmp2 <- tmp %>% 
+  select(stelle, value) %>% 
+  na.omit() %>% 
+  # predictor, outcome (Achtung: die Reihenfolge ist wichtig)
+  janitor::tabyl(stelle, value) %>% 
+  select(-stelle)
+
+# Odds Ratio mit KI ausgeben
+epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+1/epitools::oddsratio(as.matrix(tmp2), verbose=TRUE)$measure
+
+# doublecheck mit anderem package
+ 1/mosaic::oddsRatio(as.matrix(tmp2), conf.level = 0.95)
+```
