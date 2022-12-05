@@ -150,7 +150,6 @@ tbl2 <- tbl_janein(u3$F9)
 tbl <- bind_cols(tbl1, tbl2[2:3])
 
 tbl <- ges_janein(tbl)
-
 tbl$x <- rownames_janein
 names(tbl) <- c('Antwort', rep(c('n', '%'), 3))
 
@@ -160,24 +159,21 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-
   \linebreak
 
 Prüfung im durchfallenden Licht durchgeführt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u2$F11)
 tbl2 <- tbl_janein(u3$F11)
-
 tbl <- bind_cols(tbl1, tbl2[2:3])
-#tbl$gesamt <- tbl[2] + tbl[4] + tbl[6]
-
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]')
 
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 3))
 
-tbl %>% kbl2(booktabs = T, digits=1, centering=F) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U2'=2, 'U3'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -190,16 +186,15 @@ Morphologische Auffälligkeiten festgestellt? (Feststellung durch Inspektion). A
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u2$F10[u2$F9==1])
 tbl2 <- tbl_janein(u3$F10[u3$F9==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 3))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U2'=2, 'U3'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -211,13 +206,13 @@ tbl1 <- tbl_janein(u2$F12[u2$F11==1])
 tbl2 <- tbl_janein(u3$F12[u3$F11==1])
 tbl <- bind_cols(tbl1, tbl2[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 3))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U2'=2, 'U3'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -231,13 +226,13 @@ tbl1 <- tbl_janein(u2$F13)
 tbl2 <- tbl_janein(u3$F13)
 tbl <- bind_cols(tbl1, tbl2[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 3))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U2'=2, 'U3'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -249,13 +244,13 @@ tbl1 <- tbl_janein(u2$F13[(u2$F9 == 1 &  u2$F10 == 1) | (u2$F11 == 1 &  u2$F12 =
 tbl2 <- tbl_janein(u3$F13[(u3$F9 == 1 &  u3$F10 == 1) | (u3$F11 == 1 &  u2$F12 == 1)])
 tbl <- bind_cols(tbl1, tbl2[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 3))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U2'=2, 'U3'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -272,13 +267,13 @@ tbl3 <- tbl_janein(u6$F9)
 tbl4 <- tbl_janein(u7$F9)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 5))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U4'=2, 'U5'=2, 'U6'=2, 'U7'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -292,13 +287,13 @@ tbl3 <- tbl_janein(u6$F10[u6$F9==1])
 tbl4 <- tbl_janein(u7$F10[u7$F9==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 5))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U4'=2, 'U5'=2, 'U6'=2, 'U7'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -315,13 +310,13 @@ tbl3 <- tbl_janein(u6$F11[u6$F9==1])
 tbl4 <- tbl_janein(u7$F11[u7$F9==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 5))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U4'=2, 'U5'=2, 'U6'=2, 'U7'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -333,13 +328,13 @@ tbl3 <- tbl_janein(u6$F11[u6$F9==1 & u6$F10==1])
 tbl4 <- tbl_janein(u7$F11[u7$F9==1 & u7$F10==1])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 5))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U4'=2, 'U5'=2, 'U6'=2, 'U7'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -351,13 +346,13 @@ tbl3 <- tbl_janein(u6$F11[u6$F9==1 & u6$F10==2])
 tbl4 <- tbl_janein(u7$F11[u7$F9==1 & u7$F10==2])
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 5))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U4'=2, 'U5'=2, 'U6'=2, 'U7'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -372,16 +367,15 @@ Inspektion durchgeführt?
 tbl1 <- tbl_janein(u7a$F9)
 tbl2 <- tbl_janein(u8$F9)
 tbl3 <- tbl_janein(u9$F9)
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -392,16 +386,15 @@ Pupillenstatus geprüft?
 tbl1 <- tbl_janein(u7a$F11)
 tbl2 <- tbl_janein(u8$F11)
 tbl3 <- tbl_janein(u9$F11)
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -412,16 +405,15 @@ Hornhautreflexbildchen durchgeführt?
 tbl1 <- tbl_janein(u7a$F13)
 tbl2 <- tbl_janein(u8$F13)
 tbl3 <- tbl_janein(u9$F13)
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -432,16 +424,15 @@ Test mit einem binokularen Autorefraktometer durchgeführt? (z. B. von Plusoptix
 tbl1 <- tbl_janein(u7a$F14[u7a$F13==1])
 tbl2 <- tbl_janein(u8$F14[u8$F13==1])
 tbl3 <- tbl_janein(u9$F14[u9$F13==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -452,16 +443,15 @@ Stereo-Test durchgeführt?
 tbl1 <- tbl_janein(u7a$F16)
 tbl2 <- tbl_janein(u8$F16)
 tbl3 <- tbl_janein(u9$F16)
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -472,16 +462,15 @@ Test mit einem binokularem Autorefraktometer durchgeführt? (z. B. von Plusoptix
 tbl1 <- tbl_janein(u7a$F17[u7a$F16==1])
 tbl2 <- tbl_janein(u8$F17[u8$F16==1])
 tbl3 <- tbl_janein(u9$F17[u9$F16==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -492,16 +481,15 @@ Sehtest als monokulare Prüfung mittels nonverbalem Formenwiedererkennungstest d
 tbl1 <- tbl_janein(u7a$F19)
 tbl2 <- tbl_janein(u8$F19)
 tbl3 <- tbl_janein(u9$F19)
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -515,16 +503,15 @@ morphologische Auffälligkeit oder Nystagmus oder Kopffehlhaltung? Nur ausgewert
 tbl1 <- tbl_janein(u7a$F10[u7a$F9==1])
 tbl2 <- tbl_janein(u8$F10[u8$F9==1])
 tbl3 <- tbl_janein(u9$F10[u9$F9==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -535,16 +522,15 @@ Größe, Form, Lichtreaktion der Pupillen auffällig? Nur ausgewertet, wenn Pupi
 tbl1 <- tbl_janein(u7a$F12[u7a$F11==1])
 tbl2 <- tbl_janein(u8$F12[u8$F11==1])
 tbl3 <- tbl_janein(u9$F12[u9$F11==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -555,16 +541,15 @@ Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen durchgefüh
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1])
 tbl3 <- tbl_janein(u9$F15[u9$F13==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -575,16 +560,15 @@ Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *mit* binok
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1 & u7a$F14==1])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1 & u8$F14==1])
 tbl3 <- tbl_janein(u9$F15[u9$F13==1 & u9$F14==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -595,16 +579,15 @@ Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *ohne* bino
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1 & u7a$F14==2])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1 & u8$F14==2])
 tbl3 <- tbl_janein(u9$F15[u9$F13==1 & u9$F14==2])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -617,16 +600,15 @@ Stereo-Test auffällig? Nur ausgewertet, wenn Streo-Test durchegführt
 tbl1 <- tbl_janein(u7a$F18[u7a$F16==1])
 tbl2 <- tbl_janein(u8$F18[u8$F16==1])
 tbl3 <- tbl_janein(u9$F18[u9$F16==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -637,16 +619,15 @@ Stereo-Test auffällig? Nur ausgewertet, wenn Streo-Test *mit* binokularem Autor
 tbl1 <- tbl_janein(u7a$F18[u7a$F16==1 & u7a$F17==1])
 tbl2 <- tbl_janein(u8$F18[u8$F16==1 & u8$F17==1])
 tbl3 <- tbl_janein(u9$F18[u9$F16==1 & u9$F17==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -657,16 +638,15 @@ Stereo-Test auffällig? Nur ausgewertet, wenn Streo-Test *ohne* binokularem Auto
 tbl1 <- tbl_janein(u7a$F18[u7a$F16==1 & u7a$F17==2])
 tbl2 <- tbl_janein(u8$F18[u8$F16==1 & u8$F17==2])
 tbl3 <- tbl_janein(u9$F18[u9$F16==1 & u9$F17==2])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -678,16 +658,15 @@ Sehschwäche o. Rechts-Links-Differenz festgestellt. Nur ausgewertet wenn ein Se
 tbl1 <- tbl_janein(u7a$F20[u7a$F19==1])
 tbl2 <- tbl_janein(u8$F20[u8$F19==1])
 tbl3 <- tbl_janein(u9$F20[u9$F19==1])
-
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
 
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
-
 tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -700,11 +679,14 @@ tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
 Prüfung mittels Tonschwellen-Audiometrie durchgeführt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F21)
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U8 [n]','U8 [%]')
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U8'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 <br>
@@ -775,11 +757,14 @@ tbl %>%
 Tonschwellen-Audiometrie mit auffälligem Befund? Nur ausgewertet, wenn eine Prüfung mittels Tonschwellen-Audiometrie durchgeführt wurde. 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F22[u8$F21==1])
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U8 [n]','U8 [%]')
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U8'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -789,11 +774,14 @@ tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
 Bei auffälligem Befund: Gab es vor der heutigen Audiometrie bereits Anhaltspunkte für eine Störung des Hörvermögens? Nur ausgewertet, wenn eine Tonschwellen-Audiometrie durchgeführt und ein auffälliger Befund angegeben wurde. 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F24[u8$F21==1 & u8$F22==1])
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U8 [n]','U8 [%]')
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U8'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -804,11 +792,14 @@ tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
 Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellen-Audiometrie durchgeführt und ein auffälliger Befund angegeben wurde
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1])
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U8 [n]','U8 [%]')
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U8'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -818,11 +809,14 @@ tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
 Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellen-Audiometrie durchgeführt und ein **erstmaliger** auffälliger Befund angegeben wurde
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1 & u8$F24==2])
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U8 [n]','U8 [%]')
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U8'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -835,11 +829,14 @@ tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
 Auffälligkeiten an Zähnen oder der Schleimhaut festgestellt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u6$F12)
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U6 [n]','U6 [%]')
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U6'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -849,11 +846,14 @@ tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
 Verweis zum Zahnarzt? alle ausgewertet
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u6$F13)
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U6 [n]','U6 [%]')
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U6'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -861,11 +861,14 @@ tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
 Verweis zum Zahnarzt? nur ausgewertet, wenn Auffälligkeiten an Zähnen oder der Schleimhaut angegeben wurden.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u6$F13[u6$F12==1])
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U6 [n]','U6 [%]')
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U6'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -873,11 +876,14 @@ tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
 Verweis zum Zahnarzt? nur ausgewertet, wenn **keine** Auffälligkeiten an Zähnen oder der Schleimhaut angegeben wurden.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u6$F13[u6$F12==2])
-tbl$x <- rownames_janein
-names(tbl) <- c('Antwort','U6 [n]','U6 [%]')
 
-tbl %>% kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U6'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -896,20 +902,21 @@ tbl6 <- tbl_janein(u9$F21)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
+tbl <- ges_janein(tbl)
 names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
                  'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
 
-tbl <- ges_janein(tbl)
-
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
@@ -926,24 +933,27 @@ tbl6 <- tbl_janein(u9$F22)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
+tbl <- ges_janein(tbl)
 names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
                  'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
 
-tbl <- ges_janein(tbl)
-
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
   \linebreak
+
+# LESEZEICHEN
 
 Hinweise entweder in der Anamnese oder in der Orientierenden Beurteilung der Entwicklung?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -968,20 +978,21 @@ tbl6 <- tbl_janein(u9$either)
 tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 
 tbl$x <- rownames_janein
+tbl <- ges_janein(tbl)
 names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
                  'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
 
-tbl <- ges_janein(tbl)
-
+# absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+# relative Tabelle
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(Antwort %in% c('ja', 'nein', 'valides n')) %>% 
-  kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
