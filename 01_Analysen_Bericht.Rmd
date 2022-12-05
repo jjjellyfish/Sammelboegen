@@ -54,9 +54,21 @@ tbl_janein <-function(x) {
   # Verarbeitet Variable mit zwei Ausprägungen und gibt Tabelle mit absoluten und 
   # relativen Zahlen aus
   x[x==0] <- NA
-  tbl <- janitor::tabyl(x, show_na = TRUE) %>% 
+  tbl <- janitor::tabyl(x, show_na = TRUE) 
+  
+  # change name if no NAs and valid_percent is not created
+  if (!('valid_percent' %in% names(tbl))) {
+    tbl <- tbl %>% mutate(valid_percent=percent)
+  }
+    tbl <- tbl %>% 
     mutate(freq=valid_percent*100) %>% 
     select(-percent, -valid_percent)
+  
+  # if no NAs: set n of NAs to zero
+   if (is.na(tbl[3,2])) {
+    tbl[3,2] <- 0
+  }  
+  # valids n, fehlend, gesamt hinzufuegen
   tbl[4,] <- tbl[3,] #NAs verschieben
   tbl[3,2:3] <- colSums(tbl[1:2,2:3]) #valides n
   tbl[5,2] <- sum(tbl[3:4,2]) #gesamt n
@@ -904,7 +916,7 @@ tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 tbl$x <- rownames_janein
 tbl <- ges_janein(tbl)
 names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
 # absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
@@ -935,7 +947,7 @@ tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 tbl$x <- rownames_janein
 tbl <- ges_janein(tbl)
 names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
 # absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
@@ -952,8 +964,6 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
   \linebreak
-
-# LESEZEICHEN
 
 Hinweise entweder in der Anamnese oder in der Orientierenden Beurteilung der Entwicklung?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -980,7 +990,7 @@ tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3])
 tbl$x <- rownames_janein
 tbl <- ges_janein(tbl)
 names(tbl) <- c('Antwort','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 
-                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]')
+                 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
 # absolute Tabelle
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
