@@ -84,6 +84,7 @@ ges_janein <- function(df){
   df$freq_ges <- as.numeric(c(a,b,c, NA, NA))
   df <- df %>% 
   mutate_at(vars(contains('freq')), ~ sprintf("%.1f", round(., 1))) %>% 
+  mutate_at(vars(contains('freq')), ~ gsub("\\.", ",", .)) %>% 
   mutate_all(na_if,'NA')
   return(df)
 }
@@ -686,8 +687,8 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 Prüfung mittels Tonschwellen-Audiometrie durchgeführt?
 ```{r Audiometrie, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F21)
-
 tbl <- ges_janein(tbl)
+
 tbl$x <- rownames_janein
 names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
 
