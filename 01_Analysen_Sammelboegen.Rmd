@@ -140,14 +140,38 @@ tbl_kont <-function(x) {
 }
 ```
 
+# 2. Methodik
 
-## 3. Ergebnisse zu Frühereknnungsuntersuchungen
+## 2.2 Erhebung in den Arztpraxen
 
-### 3.1	Untersuchung der Augen 
+### 2.2.2 Arztfragebogen und U-Sammelbögen
 
-#### 3.1.2 Inspektion und Prüfung im durchfallenden Licht
+```{r}
+tbl1 <- u2 %>% select(id, U)
+tbl2 <- u3 %>% select(id, U)
+tbl3 <- u4 %>% select(id, U)
+tbl4 <- u5 %>% select(id, U)
+tbl5 <- u6 %>% select(id, U)
+tbl6 <- u7 %>% select(id, U)
+tbl7 <- u7a %>% select(id, U)
+tbl8 <- u8 %>% select(id, U)
+tbl9 <- u9 %>% select(id, U)
 
-##### 3.1.2.1 Häufigkeit der Durchführung 
+tbl <- bind_rows(tbl1, tbl2, tbl3, tbl4, tbl5, tbl6, tbl7, tbl8, tbl9)
+
+tbl %>% tally() %>% kbl2()
+
+```
+
+
+
+# 3. Ergebnisse zu Frühereknnungsuntersuchungen
+
+## 3.1	Untersuchung der Augen 
+
+### 3.1.2 Inspektion und Prüfung im durchfallenden Licht
+
+#### 3.1.2.1 Häufigkeit der Durchführung 
 
  \newline
 Inspektion (auf morphologische Auffälligkeiten) durchgeführt? 
@@ -187,7 +211,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-##### 3.1.2.2	Häufigkeit der Feststellung von Auffälligkeiten
+#### 3.1.2.2	Häufigkeit der Feststellung von Auffälligkeiten
 
  \newline
 Morphologische Auffälligkeiten festgestellt? (Feststellung durch Inspektion). Ausgewertet nur dann, wenn eine Inspektion durchgeführt wurde <br>
@@ -262,9 +286,9 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-#### 3.1.3	Brückner-Test (U4–U7)
+### 3.1.3	Brückner-Test (U4–U7)
 
-##### 3.1.3.1	Häufigkeit der Durchführung
+#### 3.1.3.1	Häufigkeit der Durchführung
 
  \newline
 Brückner-Test durchgeführt?
@@ -307,7 +331,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 
 
-##### 3.1.3.2	Häufigkeit der Feststellung von Auffälligkeiten
+#### 3.1.3.2	Häufigkeit der Feststellung von Auffälligkeiten
 
  \newline
 Transilluminationsunterschied festgestellt? Nur ausgewertet, wenn ein Brückner-Test durchgeführt wurde.
@@ -365,13 +389,13 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-##### 3.1.4	Inspektion, Pupillenstatus, Hornhautreflexbildchen, Stereo-Test und Formenwiedererkennungstest (U7a–U9)
+#### 3.1.4	Inspektion, Pupillenstatus, Hornhautreflexbildchen, Stereo-Test und Formenwiedererkennungstest (U7a–U9)
 
-##### 3.1.4.1	Häufigkeit der Durchführung 
+#### 3.1.4.1	Häufigkeit der Durchführung 
 
  \newline
 Inspektion durchgeführt?
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Inspektion, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F9)
 tbl2 <- tbl_janein(u8$F9)
 tbl3 <- tbl_janein(u9$F9)
@@ -390,7 +414,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Pupillenstatus geprüft?
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Pupillenstatus, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F11)
 tbl2 <- tbl_janein(u8$F11)
 tbl3 <- tbl_janein(u9$F11)
@@ -409,7 +433,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Hornhautreflexbildchen durchgeführt?
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Hornhautreflexbildchen, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F13)
 tbl2 <- tbl_janein(u8$F13)
 tbl3 <- tbl_janein(u9$F13)
@@ -428,7 +452,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Test mit einem binokularen Autorefraktometer durchgeführt? (z. B. von Plusoptix, Welch Allyn o. a. Herstellern). Nur ausgewertet, wenn Hornhautreflexbildchen durchgeführt. 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Hornhautreflexbildchen_plusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F14[u7a$F13==1])
 tbl2 <- tbl_janein(u8$F14[u8$F13==1])
 tbl3 <- tbl_janein(u9$F14[u9$F13==1])
@@ -447,7 +471,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Stereo-Test durchgeführt?
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Stereo_Test, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F16)
 tbl2 <- tbl_janein(u8$F16)
 tbl3 <- tbl_janein(u9$F16)
@@ -466,7 +490,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Test mit einem binokularem Autorefraktometer durchgeführt? (z. B. von Plusoptix, Welch Allyn o.a. Herstellern)
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Stereo_Test_plusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F17[u7a$F16==1])
 tbl2 <- tbl_janein(u8$F17[u8$F16==1])
 tbl3 <- tbl_janein(u9$F17[u9$F16==1])
@@ -485,7 +509,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Sehtest als monokulare Prüfung mittels nonverbalem Formenwiedererkennungstest durchgeführt?
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r nonverbForm, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F19)
 tbl2 <- tbl_janein(u8$F19)
 tbl3 <- tbl_janein(u9$F19)
@@ -503,11 +527,11 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 
 
-##### 3.1.4.2	Häufigkeit der Feststellung von Auffälligkeiten 
+#### 3.1.4.2	Häufigkeit der Feststellung von Auffälligkeiten 
 
  \newline
 morphologische Auffälligkeit oder Nystagmus oder Kopffehlhaltung? Nur ausgewertet, wenn Inspektion durchgeführt. 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r morphAuff, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F10[u7a$F9==1])
 tbl2 <- tbl_janein(u8$F10[u8$F9==1])
 tbl3 <- tbl_janein(u9$F10[u9$F9==1])
@@ -526,7 +550,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Größe, Form, Lichtreaktion der Pupillen auffällig? Nur ausgewertet, wenn Pupillenstatus geprüft
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Pupillen, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F12[u7a$F11==1])
 tbl2 <- tbl_janein(u8$F12[u8$F11==1])
 tbl3 <- tbl_janein(u9$F12[u9$F11==1])
@@ -545,7 +569,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen durchgeführt
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Strabismus, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1])
 tbl3 <- tbl_janein(u9$F15[u9$F13==1])
@@ -564,7 +588,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *mit* binokularem Autorefraktometer durchgeführt
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Strabismus_plusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1 & u7a$F14==1])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1 & u8$F14==1])
 tbl3 <- tbl_janein(u9$F15[u9$F13==1 & u9$F14==1])
@@ -583,7 +607,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *ohne* binokularen Autorefraktometer durchgeführt
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Strabismus_ohneplusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1 & u7a$F14==2])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1 & u8$F14==2])
 tbl3 <- tbl_janein(u9$F15[u9$F13==1 & u9$F14==2])
@@ -604,7 +628,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 
 Stereo-Test auffällig? Nur ausgewertet, wenn Streo-Test durchegführt
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Stereo_Test_Ergebnis, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F18[u7a$F16==1])
 tbl2 <- tbl_janein(u8$F18[u8$F16==1])
 tbl3 <- tbl_janein(u9$F18[u9$F16==1])
@@ -623,7 +647,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Stereo-Test auffällig? Nur ausgewertet, wenn Streo-Test *mit* binokularem Autorefraktometer durchegführt
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Stereo_Test_Ergebnis_plusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F18[u7a$F16==1 & u7a$F17==1])
 tbl2 <- tbl_janein(u8$F18[u8$F16==1 & u8$F17==1])
 tbl3 <- tbl_janein(u9$F18[u9$F16==1 & u9$F17==1])
@@ -642,7 +666,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Stereo-Test auffällig? Nur ausgewertet, wenn Streo-Test *ohne* binokularem Autorefraktometer durchegführt
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Stereo_Test_Ergebnis_ohneplusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F18[u7a$F16==1 & u7a$F17==2])
 tbl2 <- tbl_janein(u8$F18[u8$F16==1 & u8$F17==2])
 tbl3 <- tbl_janein(u9$F18[u9$F16==1 & u9$F17==2])
@@ -662,7 +686,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 
 Sehschwäche o. Rechts-Links-Differenz festgestellt. Nur ausgewertet wenn ein Sehtest mittels nonverbalem Formenwiedererkennungstest durchgeführt wurde.
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Sehschwaeche, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F20[u7a$F19==1])
 tbl2 <- tbl_janein(u8$F20[u8$F19==1])
 tbl3 <- tbl_janein(u9$F20[u9$F19==1])
@@ -679,12 +703,12 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-### 3.2	Untersuchung des Hörvermögens
-#### 3.2.2	Hörtest mittels Screeningaudiometrie (U8)
-##### 3.2.2.1	Häufigkeit der Durchführung 
+## 3.2	Untersuchung des Hörvermögens
+### 3.2.2	Hörtest mittels Screeningaudiometrie (U8)
+#### 3.2.2.1	Häufigkeit der Durchführung 
 
  \newline
-Prüfung mittels Tonschwellen-Audiometrie durchgeführt?
+Prüfung mittels Tonschwellenaudiometrie durchgeführt?
 ```{r Audiometrie, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F21)
 tbl <- ges_janein(tbl)
@@ -699,10 +723,10 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 <br>
 
-##### 3.2.2.2	Gründe keine Audiometrie durchzuführen
+#### 3.2.2.2	Gründe keine Audiometrie durchzuführen
 
  \newline
-Falls Prüfung mittels Tonschwellen-Audiometrie NICHT durchgeführt: Warum nicht? (Mehrfachnennungen möglich). Nur ausgewertet, wenn keine Prüfung mittels Tonschwellen-Audiometrie durchgeführt.
+Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Warum nicht? (Mehrfachnennungen möglich). Nur ausgewertet, wenn keine Prüfung mittels Tonschwellenaudiometrie durchgeführt.
 
 ```{r Audiometrie_Gruende, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- u8 %>% 
@@ -753,12 +777,12 @@ tbl %>%
 tbl %>% 
   slice_head(n=7) %>%
   kbl2(booktabs = T, escape = F, digits=1, 
-       col.names=c("Grund", "n", "\\% Ärzte/Ärztinnen")) %>%
+       col.names=c("Grund", "n", "\\% U-Untersuchungen")) %>%
     kable_styling(latex_options = "HOLD_position", position = "left")
 ```
   \linebreak
 
-Falls Prüfung mittels Tonschwellen-Audiometrie NICHT durchgeführt: Sonstige Gründe gegen die Durchführung (Freitextantworten)
+Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Sonstige Gründe gegen die Durchführung (Freitextantworten, als Nenner wird die Gesamtzahl von validen Antworten auf die Frage nach Gründen gegen die Durchführung einer Tonschwellenaudiometrie verwendet)
 
 ```{r Audiometrie_Gruende_Freitexte, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- read_xlsx('02_Freitexte/Freitexte_GruendeAudiometrie_CodiersystemMAXQDA_grb.xlsx', sheet='R_input')
@@ -766,20 +790,20 @@ tbl <- read_xlsx('02_Freitexte/Freitexte_GruendeAudiometrie_CodiersystemMAXQDA_g
 tbl <- tbl %>% mutate(rownr=as.character(row_number())) %>% 
   arrange(match(rownr, c('1', '3', '2', '4', '5', '7', '9', '8', '6', '10', '11', '12'))) %>% 
   select(-rownr) %>% 
-  mutate(freq=n/sum(n)*100)
+  mutate(freq=n/903*100)
 
 tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl), digits=1, 
-             col.names=c('Grund', 'n', '\\% Nennungen')) %>% 
+             col.names=c("Grund", "n", "% U-Untersuchungen")) %>% 
   kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(c(5,10), extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
 
 
-##### 3.2.2.3	Häufigkeit der Feststellung von Auffälligkeiten
+#### 3.2.2.3	Häufigkeit der Feststellung von Auffälligkeiten
 
  \newline
-Tonschwellen-Audiometrie mit auffälligem Befund? Nur ausgewertet, wenn eine Prüfung mittels Tonschwellen-Audiometrie durchgeführt wurde. 
+Tonschwellenaudiometrie mit auffälligem Befund? Nur ausgewertet, wenn eine Prüfung mittels Tonschwellenaudiometrie durchgeführt wurde. 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F22[u8$F21==1])
 
@@ -796,7 +820,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Bei auffälligem Befund: Gab es vor der heutigen Audiometrie bereits Anhaltspunkte für eine Störung des Hörvermögens? Nur ausgewertet, wenn eine Tonschwellen-Audiometrie durchgeführt und ein auffälliger Befund angegeben wurde. 
+Bei auffälligem Befund: Gab es vor der heutigen Audiometrie bereits Anhaltspunkte für eine Störung des Hörvermögens? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein auffälliger Befund angegeben wurde. 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F24[u8$F21==1 & u8$F22==1])
 
@@ -811,10 +835,10 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-##### 3.2.2.4	Häufigkeit von Überweisungen
+#### 3.2.2.4	Häufigkeit von Überweisungen
 
  \newline
-Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellen-Audiometrie durchgeführt und ein auffälliger Befund angegeben wurde
+Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein auffälliger Befund angegeben wurde
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1])
 
@@ -831,7 +855,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellen-Audiometrie durchgeführt und ein **erstmaliger** auffälliger Befund angegeben wurde
+Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein **erstmaliger** auffälliger Befund angegeben wurde
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1 & u8$F24==2])
 
@@ -846,9 +870,9 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-### 3.3	Untersuchung der Zähne und der Schleimhaut
-#### 3.3.2	Auffälligkeiten an Zähnen und Schleimhaut (U6)
-##### 3.3.2.1	Häufigkeit der Feststellung von Auffälligkeiten
+## 3.3	Untersuchung der Zähne und der Schleimhaut
+### 3.3.2	Auffälligkeiten an Zähnen und Schleimhaut (U6)
+#### 3.3.2.1	Häufigkeit der Feststellung von Auffälligkeiten
 
  \newline
 Auffälligkeiten an Zähnen oder der Schleimhaut festgestellt?
@@ -865,8 +889,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-##### 3.3.2.2	Häufigkeit von Überweisungen 
-
+#### 3.3.2.2	Häufigkeit von Überweisungen 
  \newline
 Verweis zum Zahnarzt? alle ausgewertet
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -912,8 +935,8 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-### 3.6	Untersuchung auf Sprach- und Sprechstörungen (U5–U9)
-#### 3.6.2	Hinweise auf Sprach- und Sprechstörungen
+## 3.6	Untersuchung auf Sprach- und Sprechstörungen (U5–U9)
+### 3.6.2	Hinweise auf Sprach- und Sprechstörungen
 
  \newline
 Hinweise in der Anamnese?
@@ -1114,8 +1137,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
 
-#### 3.6.5	Durchführung von Sprachberatung
-
+### 3.6.5	Durchführung von Sprachberatung
  \newline
 Besteht erweiterter Beratungsbedarf zum Thema Sprache? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1273,8 +1295,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
   \linebreak
 
 
-#### 3.6.6	Diagnostische und therapeutische Maßnahmen
-
+### 3.6.6	Diagnostische und therapeutische Maßnahmen
  \newline
 Diagnostische/therapeutische Maßnahmen eingeleitet? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1670,10 +1691,9 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 
-### 3.7	Information und Beratung der Eltern
+## 3.7	Information und Beratung der Eltern
 
-#### 3.7.2	Feststellung von erweitertem Beratungsbedarf (U2–U9)
-
+### 3.7.2	Feststellung von erweitertem Beratungsbedarf (U2–U9)
  \newline
 Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt *Beratung* angekreuzt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1787,8 +1807,8 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
 
-## 4. Ergebnisse zum Untersuchungsheft für Kinder
-### 4.1	Vorliegen des Gelben Heftes bei U-Untersuchungen
+# 4. Ergebnisse zum Untersuchungsheft für Kinder
+## 4.1	Vorliegen des Gelben Heftes bei U-Untersuchungen
 Lag das Gelbe Heft bei der Untersuchung vor?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u2$F1)
@@ -1824,9 +1844,9 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 
-### 4.2	Häufigkeit der Dokumentation 
-#### 4.2.1	Dokumentation von Auffälligkeiten 
-##### 4.2.1.1	Auffälligkeiten insgesamt 
+## 4.2	Häufigkeit der Dokumentation 
+### 4.2.1	Dokumentation von Auffälligkeiten 
+#### 4.2.1.1	Auffälligkeiten insgesamt 
 
  \newline
 Wie viele Auffälligkeiten wurden im Abschnitt *Untersuchung* angekreuzt?
@@ -1898,7 +1918,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
 
-#### 4.2.2	Dokumentation von erweitertem Beratungsbedarf 
+### 4.2.2	Dokumentation von erweitertem Beratungsbedarf 
 
  \newline
 Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt *Beratung* angekreuzt?
@@ -1909,8 +1929,8 @@ Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt *B
 **Die Frage ist bereits unter 3.7.2 ausgewertet**
 
 
-#### 4.2.3	Dokumentation von Auffälligkeiten zur Beobachtung
-##### 4.2.3.1	Auffälligkeiten zur Beobachtung insgesamt 
+### 4.2.3	Dokumentation von Auffälligkeiten zur Beobachtung
+#### 4.2.3.1	Auffälligkeiten zur Beobachtung insgesamt 
 
  \newline
 Eintrag bei „Auffälligkeiten zur Beobachtung“ im Abschnitt *Ergebnisse*?
@@ -1947,7 +1967,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 
-### 4.4	Aufwand für die Dokumentation 
+## 4.4	Aufwand für die Dokumentation 
 Zeitaufwand für Eintragungen in das Gelbe Heft (Schätzwert in Minuten)
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_kont(u2$F8)
@@ -2031,12 +2051,11 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 
-### 4.5	Teilnahmekarte
-#### 4.5.1	Ausfüllen der Teilnahmekarte
-
+## 4.5	Teilnahmekarte
+### 4.5.1	Ausfüllen der Teilnahmekarte
  \newline
 Teilnahmekarte ausgefüllt?
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r teilnahmekarte, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u2$F7)
 tbl2 <- tbl_janein(u3$F7)
 tbl3 <- tbl_janein(u4$F7)
