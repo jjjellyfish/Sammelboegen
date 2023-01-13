@@ -146,7 +146,8 @@ tbl_kont <-function(x) {
 
 ### 2.2.2 Arztfragebogen und U-Sammelbögen
 
-```{r}
+Anzahl untersuchter Kinder nach U-Untersuchung
+```{r n, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- u2 %>% select(id, U)
 tbl2 <- u3 %>% select(id, U)
 tbl3 <- u4 %>% select(id, U)
@@ -156,10 +157,15 @@ tbl6 <- u7 %>% select(id, U)
 tbl7 <- u7a %>% select(id, U)
 tbl8 <- u8 %>% select(id, U)
 tbl9 <- u9 %>% select(id, U)
-
 tbl <- bind_rows(tbl1, tbl2, tbl3, tbl4, tbl5, tbl6, tbl7, tbl8, tbl9)
 
-tbl %>% tally() %>% kbl2()
+tbl <- tbl %>% tabyl(U) %>% mutate(percent=percent*100) %>% adorn_totals('row', name='Ges.')
+
+tbl %>%
+  kbl2(booktabs = T, centering=F, digits=1,
+       col.names=c("U-Untersuchung", "n", "%")) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
+  row_spec(9, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
 ```
 
@@ -344,7 +350,10 @@ tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3])
 
 tbl <- ges_janein(tbl)
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort', rep(c('n', '%'), 5))
+
+a <- tbl %>% filter(x %in% c('ja', 'nein')) %>% mutate(y='alle U-Untersuchungen') #für Abbildung
+
+names(tbl) <- c('Antwort', rep(c('n', '%'), 5)) 
 
 tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   add_header_above(c('', 'U4'=2, 'U5'=2, 'U6'=2, 'U7'=2, 'Ges.'=2)) %>% 
@@ -362,6 +371,9 @@ tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3])
 
 tbl <- ges_janein(tbl)
 tbl$x <- rownames_janein
+
+b <- tbl %>% filter(x %in% c('ja', 'nein')) %>% mutate(y='mit Autorefraktometer') #für Abbildung
+
 names(tbl) <- c('Antwort', rep(c('n', '%'), 5))
 
 tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
@@ -380,6 +392,9 @@ tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3])
 
 tbl <- ges_janein(tbl)
 tbl$x <- rownames_janein
+
+c <- tbl %>% filter(x %in% c('ja', 'nein')) %>% mutate(y='ohne Autorefraktometer') #für Abbildung
+
 names(tbl) <- c('Antwort', rep(c('n', '%'), 5))
 
 tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
@@ -387,6 +402,50 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
+
+
+```{r plot1, echo=FALSE, include=FALSE, message=FALSE, warning=FALSE}
+### GRAFIK TRANSILLUMINATIONSUNTERSCHEIDE
+
+tmp <- bind_rows(a, b, c)
+tmp <- tmp %>% select(x, y, contains('n'))
+names(tmp) <- c('x', 'y', 'U4', 'U5', 'U6', 'U7', 'ges.')
+
+tmp <- tmp %>% 
+  pivot_longer(U4:ges., names_to='U', values_to='n') %>% 
+  group_by(U, y) %>% 
+  mutate(perc = n / sum(n)) %>% 
+  ungroup()
+
+p <- tmp %>% 
+  filter(x == 'ja') %>%
+  ggplot(aes(y=perc, x=y, fill=y, label = scales::percent(perc, accuracy=.1, decimal.mark = ","))) + 
+  geom_bar(stat="identity") +
+  scale_y_continuous(limits = c(0.0, 0.2), labels = scales::percent_format(accuracy=.1, decimal.mark = ",")) +
+  geom_text(position = position_dodge(width = .9),vjust = -0.5, size = 4.5, color="#00386a") + 
+  scale_fill_manual(values=c('#00386a', '#BED600', '#eda63b')) +
+  facet_wrap(~ factor(U, levels=c('U4', 'U5', 'U6', 'U7', 'ges.')), nrow=1) +
+  ylab('Anteil U-Untersuchungen') +
+  theme_bw() +
+  theme(strip.background = element_rect(fill="#cbd3b2"),
+        axis.title.x = element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.y = element_text(color="#00386a", family = "Verdana", size = 14),
+        axis.text.y = element_text(color="#00386a", family = "Verdana", size = 14),
+        strip.text.x = element_text(color="#00386a", family = "Verdana", size = 14),
+        legend.position="bottom",
+        legend.title = element_blank(), 
+        legend.text = element_text(color="#00386a", family = "Verdana", size = 14),
+        plot.title = element_blank())
+
+bmp(file="04_Abbildungen/Transilluminationsunterschiede.bmp", width = 750, height = 500, type="cairo")
+print(p)
+dev.off()
+
+```
+
+
 
 
 #### 3.1.4	Inspektion, Pupillenstatus, Hornhautreflexbildchen, Stereo-Test und Formenwiedererkennungstest (U7a–U9)
