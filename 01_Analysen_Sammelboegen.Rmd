@@ -175,7 +175,7 @@ tbl %>%
 
 ## 3.1	Untersuchung der Augen 
 
-### 3.1.2 Inspektion und Prüfung im durchfallenden Licht
+### 3.1.2 Inspektion und Prüfung im durchfallenden Licht (U2 und U3)
 
 #### 3.1.2.1 Häufigkeit der Durchführung 
 
@@ -762,8 +762,10 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-## 3.2	Untersuchung des Hörvermögens
+## 3.2	Untersuchung des Hörvermögens (U8)
+
 ### 3.2.2	Hörtest mittels Screeningaudiometrie (U8)
+
 #### 3.2.2.1	Häufigkeit der Durchführung 
 
  \newline
@@ -841,7 +843,7 @@ tbl %>%
 ```
   \linebreak
 
-Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Sonstige Gründe gegen die Durchführung (Freitextantworten, als Nenner wird die Gesamtzahl von validen Antworten auf die Frage nach Gründen gegen die Durchführung einer Tonschwellenaudiometrie verwendet)
+Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Sonstige Gründe gegen die Durchführung (Freitextantworten, als Nenner wird einerseits die Anzahl von Kindern, bei denen mind. ein sonstiger Grund genannt wurde (n = 219) und andererseist die Gesamtzahl von validen Antworten auf die Frage nach Gründen gegen die Durchführung einer Tonschwellenaudiometrie verwendet)
 
 ```{r Audiometrie_Gruende_Freitexte, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- read_xlsx('02_Freitexte/Freitexte_GruendeAudiometrie_CodiersystemMAXQDA_grb.xlsx', sheet='R_input')
@@ -849,14 +851,14 @@ tbl <- read_xlsx('02_Freitexte/Freitexte_GruendeAudiometrie_CodiersystemMAXQDA_g
 tbl <- tbl %>% mutate(rownr=as.character(row_number())) %>% 
   arrange(match(rownr, c('1', '3', '2', '4', '5', '7', '9', '8', '6', '10', '11', '12'))) %>% 
   select(-rownr) %>% 
-  mutate(freq=n/903*100)
+  mutate(freq1=n/219*100,
+         freq2=n/903*100)
 
 tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl), digits=1, 
-             col.names=c("Grund", "n", "% U-Untersuchungen")) %>% 
+             col.names=c("Grund", "n", "% Sonstige", "% U-Untersuchungen")) %>% 
   kable_styling(latex_options = "HOLD_position", position = "left") %>% 
   row_spec(c(5,10), extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
-
 
 
 #### 3.2.2.3	Häufigkeit der Feststellung von Auffälligkeiten
@@ -929,8 +931,10 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-## 3.3	Untersuchung der Zähne und der Schleimhaut
+## 3.3	Untersuchung der Zähne und der Schleimhaut (U6)
+
 ### 3.3.2	Auffälligkeiten an Zähnen und Schleimhaut (U6)
+
 #### 3.3.2.1	Häufigkeit der Feststellung von Auffälligkeiten
 
  \newline
@@ -994,8 +998,10 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-## 3.6	Untersuchung auf Sprach- und Sprechstörungen (U5–U9)
-### 3.6.2	Hinweise auf Sprach- und Sprechstörungen
+
+## 3.5	Untersuchung auf Sprach- und Sprechstörungen (U5–U9)
+
+### 3.5.2	Hinweise auf Sprach- und Sprechstörungen
 
  \newline
 Hinweise in der Anamnese?
@@ -1196,7 +1202,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
 
-### 3.6.5	Durchführung von Sprachberatung
+### 3.5.5	Durchführung von Sprachberatung
  \newline
 Besteht erweiterter Beratungsbedarf zum Thema Sprache? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1354,7 +1360,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
   \linebreak
 
 
-### 3.6.6	Diagnostische und therapeutische Maßnahmen
+### 3.5.6	Diagnostische und therapeutische Maßnahmen
  \newline
 Diagnostische/therapeutische Maßnahmen eingeleitet? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1750,7 +1756,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 
-## 3.7	Information und Beratung der Eltern
+## 3.7	Information und Beratung der Eltern (U2–U9)
 
 ### 3.7.2	Feststellung von erweitertem Beratungsbedarf (U2–U9)
  \newline
@@ -1818,7 +1824,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-
+  \linebreak
 Anzahl genannter Beratungsthemen: 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 u2$F5_cat <- ifelse(u2$F5 >= 4, '4+', u2$F5)
@@ -1867,7 +1873,9 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 # 4. Ergebnisse zum Untersuchungsheft für Kinder
-## 4.1	Vorliegen des Gelben Heftes bei U-Untersuchungen
+
+## 4.2	Vorliegen des Gelben Heftes bei U-Untersuchungen
+
 Lag das Gelbe Heft bei der Untersuchung vor?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u2$F1)
@@ -1903,9 +1911,11 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 
-## 4.2	Häufigkeit der Dokumentation 
-### 4.2.1	Dokumentation von Auffälligkeiten 
-#### 4.2.1.1	Auffälligkeiten insgesamt 
+## 4.3	Häufigkeit der Dokumentation im Gelben Heft
+
+### 4.3.1	Dokumentation von Auffälligkeiten 
+
+#### 4.3.1.1 Auffälligkeiten im Abschnitt *Untersuchung* insgesamt 
 
  \newline
 Wie viele Auffälligkeiten wurden im Abschnitt *Untersuchung* angekreuzt?
@@ -1929,7 +1939,7 @@ tbl %>%
   kable_styling(latex_options = "HOLD_position", position = "left") # Zwingt die Tabelle an die Position im Text
 ```
 
-
+  \linebreak
 Anzahl genannter Auffälligkeiten im Abschnitt *Untersuchung*: 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 u2$F4_cat <- ifelse(u2$F4 >= 3, '3+', u2$F4)
@@ -1967,29 +1977,18 @@ tbl$Antwort[(nrow(tbl)-2):nrow(tbl)] <- c("valides n", "fehlend", "gesamt n")
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
   kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
   kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
-  row_spec(5, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+  row_spec(4, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(!Antwort %in% c("fehlend", "gesamt n")) %>% 
   kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
   kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
-  row_spec(5, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+  row_spec(4, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
 
-### 4.2.2	Dokumentation von erweitertem Beratungsbedarf 
 
- \newline
-Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt *Beratung* angekreuzt?
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-
-```
-
-**Die Frage ist bereits unter 3.7.2 ausgewertet**
-
-
-### 4.2.3	Dokumentation von Auffälligkeiten zur Beobachtung
-#### 4.2.3.1	Auffälligkeiten zur Beobachtung insgesamt 
+#### 4.3.1.3	Auffälligkeiten im Abschnitt *Ergebnisse*
 
  \newline
 Eintrag bei „Auffälligkeiten zur Beobachtung“ im Abschnitt *Ergebnisse*?
@@ -2025,49 +2024,39 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
 
+### 4.3.2	Dokumentation von erweitertem Beratungsbedarf 
 
-## 4.4	Aufwand für die Dokumentation 
-Zeitaufwand für Eintragungen in das Gelbe Heft (Schätzwert in Minuten)
+#### 4.3.2.1	Erweiterter Beratungsbedarf insgesamt
+ \newline
+Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt *Beratung* angekreuzt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-tbl1 <- tbl_kont(u2$F8)
-tbl2 <- tbl_kont(u3$F8)
-tbl3 <- tbl_kont(u4$F8)
-tbl4 <- tbl_kont(u5$F8)
-tbl5 <- tbl_kont(u6$F8)
-tbl6 <- tbl_kont(u7$F8)
-tbl7 <- tbl_kont(u7a$F8)
-tbl8 <- tbl_kont(u8$F8)
-tbl9 <- tbl_kont(u9$F8)
-tbl <- bind_rows(tbl1, tbl2, tbl3, tbl4, tbl5, tbl6, tbl7, tbl8, tbl9)
 
-tbl$U <- c('U2', 'U3', 'U4', 'U5', 'U6', 'U7', 'U7a', 'U8', 'U9')
-tbl <- select(tbl, U, everything())
-
-tbl %>%
-  kbl2(booktabs = T, digits=2, row.names = F) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") # Zwingt die Tabelle an die Position im Text
 ```
 
+Die Frage ist bereits im Abschnitt 3.7.2 ausgewertet
 
-Anzahl genannter Zeitaufwände: 
+
+## 4.5	Aufwand für die Dokumentation 
+
+Anzahl genannter Zeitaufwände (eingeteilt in Kategorien) 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-u2 <- u2 %>% mutate(F8_cat=case_when(F8 == 0 ~ '0', F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
+u2 <- u2 %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
-u3 <- u3 %>% mutate(F8_cat=case_when(F8 == 0 ~ '0', F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
+u3 <- u3 %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
-u4 <- u4 %>% mutate(F8_cat=case_when(F8 == 0 ~ '0', F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
+u4 <- u4 %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
-u5 <- u5 %>% mutate(F8_cat=case_when(F8 == 0 ~ '0', F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
+u5 <- u5 %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
-u6 <- u6 %>% mutate(F8_cat=case_when(F8 == 0 ~ '0', F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
+u6 <- u6 %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
-u7 <- u7 %>% mutate(F8_cat=case_when(F8 == 0 ~ '0', F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
+u7 <- u7 %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
-u7a <- u7a %>% mutate(F8_cat=case_when(F8 == 0 ~ '0', F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
+u7a <- u7a %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
-u8 <- u8 %>% mutate(F8_cat=case_when(F8 == 0 ~ '0', F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
+u8 <- u8 %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
-u9 <- u9 %>% mutate(F8_cat=case_when(F8 == 0 ~ '0', F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
+u9 <- u9 %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
 
 
@@ -2098,20 +2087,42 @@ tbl <- tbl %>% arrange(match(Antwort, c('0 Min.', '<1 Min.', '>=1 & <2 Min.', '>
 tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
   kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
   kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
-  row_spec(6, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+  row_spec(5, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
 tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
   filter(!Antwort %in% c("fehlend", "gesamt n")) %>% 
   kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
   kable_styling(latex_options = "HOLD_position", position = "left") %>% # Zwingt die Tabelle an die Position im Text
-  row_spec(6, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+  row_spec(5, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+```
 
+  \linebreak
+Zeitaufwand für Eintragungen in das Gelbe Heft (Schätzwert in Minuten, nur valide Angaben inkludiert)
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+tbl1 <- tbl_kont(u2$F8[u2$F8!=0])
+tbl2 <- tbl_kont(u3$F8[u3$F8!=0])
+tbl3 <- tbl_kont(u4$F8[u4$F8!=0])
+tbl4 <- tbl_kont(u5$F8[u5$F8!=0])
+tbl5 <- tbl_kont(u6$F8[u6$F8!=0])
+tbl6 <- tbl_kont(u7$F8[u7$F8!=0])
+tbl7 <- tbl_kont(u7a$F8[u7a$F8!=0])
+tbl8 <- tbl_kont(u8$F8[u8$F8!=0])
+tbl9 <- tbl_kont(u9$F8[u9$F8!=0])
+tbl <- bind_rows(tbl1, tbl2, tbl3, tbl4, tbl5, tbl6, tbl7, tbl8, tbl9)
+
+tbl$U <- c('U2', 'U3', 'U4', 'U5', 'U6', 'U7', 'U7a', 'U8', 'U9')
+tbl <- select(tbl, U, everything())
+
+tbl %>%
+  kbl2(booktabs = T, digits=2, row.names = F) %>% # Für den Tabellenstil
+  kable_styling(latex_options = "HOLD_position", position = "left") # Zwingt die Tabelle an die Position im Text
 ```
 
 
+## 4.6	Nutzung der Teilnahmekarte
 
-## 4.5	Teilnahmekarte
-### 4.5.1	Ausfüllen der Teilnahmekarte
+### 4.6.1	Ausfüllen der Teilnahmekarte
+
  \newline
 Teilnahmekarte ausgefüllt?
 ```{r teilnahmekarte, echo=FALSE, message=FALSE, warning=FALSE}
