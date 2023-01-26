@@ -171,9 +171,9 @@ tbl %>%
 
 
 
-# 3. Ergebnisse zu Frühereknnungsuntersuchungen
+# 3. Ergebnisse der Evaluation von Abschnitt B (Früherkennungsuntersuchungen) der Kinder-Richtlinie 
 
-## 3.1	Untersuchung der Augen 
+## 3.1	Untersuchung der Augen (U2-U9)
 
 ### 3.1.2 Inspektion und Prüfung im durchfallenden Licht (U2 und U3)
 
@@ -351,7 +351,7 @@ tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3])
 tbl <- ges_janein(tbl)
 tbl$x <- rownames_janein
 
-a <- tbl %>% filter(x %in% c('ja', 'nein')) %>% mutate(y='alle U-Untersuchungen') #für Abbildung
+a <- tbl %>% filter(x %in% c('ja', 'nein')) %>% mutate(y='alle U4-U7 Untersuchungen') #für Abbildung
 
 names(tbl) <- c('Antwort', rep(c('n', '%'), 5)) 
 
@@ -382,7 +382,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-Transilluminationsunterschied festgestellt? Nur ausgewertet, wenn ein Brückner-Test *ohne* binokularen Autorefraktometer durchgeführt wurde.
+Transilluminationsunterschied festgestellt? Nur ausgewertet, wenn ein Brückner-Test *ohne* binokulares Autorefraktometer durchgeführt wurde.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u4$F11[u4$F9==1 & u4$F10==2])
 tbl2 <- tbl_janein(u5$F11[u5$F9==1 & u5$F10==2])
@@ -419,13 +419,16 @@ tmp <- tmp %>%
 
 p <- tmp %>% 
   filter(x == 'ja') %>%
-  ggplot(aes(y=perc, x=y, fill=y, label = scales::percent(perc, accuracy=.1, decimal.mark = ","))) + 
+  ggplot(aes(y=perc, 
+             x=factor(y, levels=c('alle U4-U7 Untersuchungen', 'ohne Autorefraktometer', 'mit Autorefraktometer')), 
+             fill=factor(y, levels=c('alle U4-U7 Untersuchungen', 'ohne Autorefraktometer', 'mit Autorefraktometer')), 
+             label = scales::percent(perc, accuracy=.1, decimal.mark = ","))) + 
   geom_bar(stat="identity") +
   scale_y_continuous(limits = c(0.0, 0.2), labels = scales::percent_format(accuracy=.1, decimal.mark = ",")) +
   geom_text(position = position_dodge(width = .9),vjust = -0.5, size = 4.5, color="#00386a") + 
-  scale_fill_manual(values=c('#00386a', '#BED600', '#eda63b')) +
+  scale_fill_manual(values=c('#00386a', '#eda63b', '#BED600')) +
   facet_wrap(~ factor(U, levels=c('U4', 'U5', 'U6', 'U7', 'ges.')), nrow=1) +
-  ylab('Anteil U-Untersuchungen') +
+  ylab('Anteil Untersuchungen') +
   theme_bw() +
   theme(strip.background = element_rect(fill="#cbd3b2"),
         axis.title.x = element_blank(),
@@ -448,7 +451,7 @@ dev.off()
 
 
 
-#### 3.1.4	Inspektion, Pupillenstatus, Hornhautreflexbildchen, Stereo-Test und Formenwiedererkennungstest (U7a–U9)
+### 3.1.4	Inspektion, Pupillenstatus, Hornhautreflexbildchen, Stereo-Test und Formenwiedererkennungstest (U7a–U9)
 
 #### 3.1.4.1	Häufigkeit der Durchführung 
 
@@ -510,7 +513,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Test mit einem binokularen Autorefraktometer durchgeführt? (z. B. von Plusoptix, Welch Allyn o. a. Herstellern). Nur ausgewertet, wenn Hornhautreflexbildchen durchgeführt. 
+Test mit einem  Autorefraktometer durchgeführt? (z. B. von Plusoptix, Welch Allyn o. a. Herstellern). Nur ausgewertet, wenn Hornhautreflexbildchen durchgeführt. 
 ```{r Hornhautreflexbildchen_plusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F14[u7a$F13==1])
 tbl2 <- tbl_janein(u8$F14[u8$F13==1])
@@ -665,7 +668,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *ohne* binokularen Autorefraktometer durchgeführt
+Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *ohne* binokulares Autorefraktometer durchgeführt
 ```{r Strabismus_ohneplusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1 & u7a$F14==2])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1 & u8$F14==2])
@@ -919,6 +922,21 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein **erstmaliger** auffälliger Befund angegeben wurde
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1 & u8$F24==2])
+
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 2))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U8'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
+  row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+```
+
+
+Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und **bereits vorher** Anhaltspunkte für ein Störung des Hörvermögens bestanden
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1 & u8$F24==1])
 
 tbl <- ges_janein(tbl)
 tbl$x <- rownames_janein
@@ -1748,10 +1766,68 @@ tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
   kable_styling(latex_options = "HOLD_position", position = "left")
 
 # relative Häufigkeiten
-tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
-  filter(!Antwort %in% c('valides n', 'fehlend', 'gesamt n')) %>%
+tmp <- tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
+  filter(!Antwort %in% c('valides n', 'fehlend', 'gesamt n')) 
+
+tmp %>%
   kbl2(booktabs = T, digits=1) %>% # Für den Tabellenstil
-  kable_styling(latex_options = "HOLD_position", position = "left") 
+  kable_styling(latex_options = "HOLD_position", position = "left")
+
+openxlsx::write.xlsx(tmp, file='05_Tabellen/Sprache_Massnahmen.xlsx')
+```
+
+ \newline
+Analyse von Freitexteintragungen unter Sonstige. Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen entweder im Rahmen der Anamnese oder im Rahmen der Orientierenden Beurteilung der Entwicklung angegeben, die Frage nach Einleitung von diagnostischen oder therapeutischen Maßnahmen bejaht & die Option Sonstige unter diagnostische/therapeutische Maßnahme angekreuzt wurde. 
+
+```{r sprache_freitext, message=FALSE, warning=FALSE}
+### Fälle filtern
+tbl1 <- u5 %>% filter((F12==1 | F13==1) & F15==1 & F20==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
+tbl2 <- u6 %>% filter((F14==1 | F15==1) & F17==1 & F22==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
+tbl3 <- u7 %>% filter((F12==1 | F13==1) & F15==1 & F20==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
+tbl4 <- u7a %>% filter((F21==1 | F22==1) & F24==1 & F29==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
+tbl5 <- u8 %>% filter((F32==1 | F33==1) & F35==1 & F40==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
+tbl6 <- u9 %>% filter((F21==1 | F22==1) & F24==1 & F29==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
+
+tbl <- bind_rows(tbl1, tbl2, tbl3, tbl4, tbl5, tbl6)
+
+
+### MaxQDA-Ergebnis einlesen
+txt <- openxlsx::read.xlsx("O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/02_Freitexte/FreitextSprache_Dokumente&Codes_grb.xlsx")
+
+txt <- txt %>% 
+  mutate(id = str_extract(Dokument, '^[^,]*')) %>% 
+  separate(Codes, "\n", into = c("U", 'Codes1', 'Codes2', 'Codes3'), extra = "merge") %>% 
+  select(id, U, Codes1, Codes2, Codes3)
+
+txt2 <- txt %>% filter(id %in% tbl$id) %>% # txt nach Fällen filtern: n = 995 Kinder mit Freitexten
+  pivot_longer(cols = starts_with('Codes'), names_to = 'pos', values_to = 'Code') %>%
+  na.omit() 
+
+#txt2 %>% filter(pos == 'Codes1') %>% tabyl(U)
+
+txt2 <- txt2 %>% 
+  group_by(U, Code) %>% tally() %>% 
+  pivot_wider(names_from = U, values_from = n) %>% 
+  janitor::adorn_totals('col', name = 'Ges.')
+
+### abs
+txt2 %>% 
+ kbl2(booktabs = T, digits=2, row.names = F, 
+      col.names= c('Antwort', 'U5 [n]', 'U6 [n]','U7 [n]','U7a [n]','U8 [n]','U9 [n]', 'Ges. [n]')) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left")
+
+### rel
+txt2 %>% 
+  mutate(U5 = U5 / 6 * 100, 
+         U6 = U6 / 11 * 100,
+         U7 = U7 / 222 * 100,
+         U7a = U7a / 222 * 100,
+         U8 = U8 / 278 * 100,
+         U9 = U9 / 256 *100,
+         `Ges.` = `Ges.` / 995 *100) %>% 
+  kbl2(booktabs = T, digits=1, row.names = F, 
+      col.names= c('Antwort', 'U5 [%]', 'U6 [%]','U7 [%]','U7a [%]','U8 [%]','U9 [%]', 'Ges. [%]')) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left")
 ```
 
 
@@ -1872,7 +1948,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
 
-# 4. Ergebnisse zum Untersuchungsheft für Kinder
+# 4. Ergebnisse der Evaluation von Anlage 1 (Untersuchungsheft für Kinder) der Kinder-Richtlinie
 
 ## 4.2	Vorliegen des Gelben Heftes bei U-Untersuchungen
 
