@@ -1814,7 +1814,8 @@ tbl %>%
 txt2 <- txt2 %>% 
   pivot_longer(cols = starts_with('Codes'), names_to = 'pos', values_to = 'Code') %>%
   na.omit() %>%  
-  group_by(U, Code) %>% tally() %>% 
+  group_by(U, Code) %>% 
+  tally() %>% 
   pivot_wider(names_from = U, values_from = n) %>% 
   janitor::adorn_totals('col', name = 'Ges.') %>% 
   # Kategroeien umbenennen
@@ -1860,6 +1861,27 @@ txt2 %>%
       col.names= c('Antwort', 'U5 [%]', 'U6 [%]','U7 [%]','U7a [%]','U8 [%]','U9 [%]', 'Ges. [%]')) %>% 
   kable_styling(latex_options = "HOLD_position", position = "left")
 ```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+### Prüfung, ob nicht-medizinische Maßnahmen & Kontrolle disjunkt
+# txt2 <- txt %>% 
+#   filter(id %in% tbl$id) %>% 
+#   filter(!is.na(Codes1)) %>% 
+#   pivot_longer(cols = starts_with('Codes'), names_to = 'pos', values_to = 'Code') %>%
+#   na.omit() %>%  
+#   group_by(id) %>% 
+#   mutate(abwarten = ifelse(any(Code == 'Beobachtung/Kontrolle'),1,0), 
+#          sozial = ifelse(any(Code == 'Soziale Maßnahmen'),1,0), 
+#          beides = ifelse((abwarten + sozial) == 2, 1,0)) %>% 
+#   ungroup() %>%
+#   distinct(id, .keep_all = T) %>% 
+#   mutate_at(vars(abwarten, sozial, beides), as.factor) %>% 
+#   group_by(abwarten, sozial, beides) %>% 
+#   tally()
+
+#kein Output, bisher nur angeguckt
+```
+
 
 
 ## 3.7	Information und Beratung der Eltern (U2–U9)
