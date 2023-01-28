@@ -279,7 +279,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 Überweisung zum Augenarzt? Nur ausgewertet wenn Inspektion oder Prüfung im durchfallenden Licht durchgeführt und entweder in der Inspektion oder in der Prüfung im durchfallenden Licht Auffälligkeiten festgestellt wurden. 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u2$F13[(u2$F9 == 1 &  u2$F10 == 1) | (u2$F11 == 1 &  u2$F12 == 1)])
-tbl2 <- tbl_janein(u3$F13[(u3$F9 == 1 &  u3$F10 == 1) | (u3$F11 == 1 &  u2$F12 == 1)])
+tbl2 <- tbl_janein(u3$F13[(u3$F9 == 1 &  u3$F10 == 1) | (u3$F11 == 1 &  u3$F12 == 1)])
 tbl <- bind_cols(tbl1, tbl2[2:3])
 
 tbl <- ges_janein(tbl)
@@ -868,7 +868,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl), digits=1,
 
  \newline
 Tonschwellenaudiometrie mit auffälligem Befund? Nur ausgewertet, wenn eine Prüfung mittels Tonschwellenaudiometrie durchgeführt wurde. 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Auffaelligkeiten_Audiometrie, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F22[u8$F21==1])
 
 tbl <- ges_janein(tbl)
@@ -885,7 +885,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Bei auffälligem Befund: Gab es vor der heutigen Audiometrie bereits Anhaltspunkte für eine Störung des Hörvermögens? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein auffälliger Befund angegeben wurde. 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Auffaelligkeiten_Audiometrie_erstmalig, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F24[u8$F21==1 & u8$F22==1])
 
 tbl <- ges_janein(tbl)
@@ -903,7 +903,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
  \newline
 Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein auffälliger Befund angegeben wurde
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Ueberweisungen_Audiometrie, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1])
 
 tbl <- ges_janein(tbl)
@@ -920,7 +920,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein **erstmaliger** auffälliger Befund angegeben wurde
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Ueberweisungen_Audiometrie_erstmalig, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1 & u8$F24==2])
 
 tbl <- ges_janein(tbl)
@@ -935,7 +935,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 
 Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und **bereits vorher** Anhaltspunkte für ein Störung des Hörvermögens bestanden
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r Ueberweisungen_Audiometrie_wiederholt, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1 & u8$F24==1])
 
 tbl <- ges_janein(tbl)
@@ -1777,19 +1777,17 @@ openxlsx::write.xlsx(tmp, file='05_Tabellen/Sprache_Massnahmen.xlsx')
 ```
 
  \newline
-Analyse von Freitexteintragungen unter Sonstige. Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen entweder im Rahmen der Anamnese oder im Rahmen der Orientierenden Beurteilung der Entwicklung angegeben, die Frage nach Einleitung von diagnostischen oder therapeutischen Maßnahmen bejaht & die Option Sonstige unter diagnostische/therapeutische Maßnahme angekreuzt wurde. 
-
+Analyse von Freitexteintragungen unter Sonstige. Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen entweder im Rahmen der Anamnese oder im Rahmen der Orientierenden Beurteilung der Entwicklung angegeben, die Frage nach Einleitung von diagnostischen oder therapeutischen Maßnahmen bejaht und sonstige diagnostische/therapeutische Maßnahmen angekreuzt wurde. 
 ```{r sprache_freitext, message=FALSE, warning=FALSE}
 ### Fälle filtern
-tbl1 <- u5 %>% filter((F12==1 | F13==1) & F15==1 & F20==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
-tbl2 <- u6 %>% filter((F14==1 | F15==1) & F17==1 & F22==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
-tbl3 <- u7 %>% filter((F12==1 | F13==1) & F15==1 & F20==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
-tbl4 <- u7a %>% filter((F21==1 | F22==1) & F24==1 & F29==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
-tbl5 <- u8 %>% filter((F32==1 | F33==1) & F35==1 & F40==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
-tbl6 <- u9 %>% filter((F21==1 | F22==1) & F24==1 & F29==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id)
+tbl1 <- u5 %>% filter((F12==1 | F13==1) & F15==1 & F20==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id, U)
+tbl2 <- u6 %>% filter((F14==1 | F15==1) & F17==1 & F22==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id, U)
+tbl3 <- u7 %>% filter((F12==1 | F13==1) & F15==1 & F20==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id, U)
+tbl4 <- u7a %>% filter((F21==1 | F22==1) & F24==1 & F29==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id, U)
+tbl5 <- u8 %>% filter((F32==1 | F33==1) & F35==1 & F40==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id, U)
+tbl6 <- u9 %>% filter((F21==1 | F22==1) & F24==1 & F29==1) %>% mutate(id=paste0(id, U, kind)) %>% select(id, U)
 
 tbl <- bind_rows(tbl1, tbl2, tbl3, tbl4, tbl5, tbl6)
-
 
 ### MaxQDA-Ergebnis einlesen
 txt <- openxlsx::read.xlsx("O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/02_Freitexte/FreitextSprache_Dokumente&Codes_grb.xlsx")
@@ -1799,23 +1797,38 @@ txt <- txt %>%
   separate(Codes, "\n", into = c("U", 'Codes1', 'Codes2', 'Codes3'), extra = "merge") %>% 
   select(id, U, Codes1, Codes2, Codes3)
 
-txt2 <- txt %>% filter(id %in% tbl$id) %>% # txt nach Fällen filtern: n = 995 Kinder mit Freitexten
-  pivot_longer(cols = starts_with('Codes'), names_to = 'pos', values_to = 'Code') %>%
-  na.omit() 
+# txt nach Fällen filtern
+txt2 <- txt %>% filter(id %in% tbl$id) %>% filter(!is.na(Codes1)) #n = 995 Kinder mit Freitexten
 
-#txt2 %>% filter(pos == 'Codes1') %>% tabyl(U)
+### Tabelle über Anzahl Personen mit Freitexten
+tbl %>% 
+  mutate(`Freitext angegeben` = ifelse(id %in% txt2$id, 'Ja', 'Nein')) %>% 
+  tabyl(`Freitext angegeben`, U) %>% 
+  adorn_totals('row', name='Gesamt n') %>% 
+  adorn_totals('col', name='Ges.') %>% 
+  kbl2(booktabs = T, row.names = F) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
+  row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 
+### selektierte Fälle auswerten
 txt2 <- txt2 %>% 
+  pivot_longer(cols = starts_with('Codes'), names_to = 'pos', values_to = 'Code') %>%
+  na.omit() %>%  
   group_by(U, Code) %>% tally() %>% 
   pivot_wider(names_from = U, values_from = n) %>% 
-  janitor::adorn_totals('col', name = 'Ges.')
+  janitor::adorn_totals('col', name = 'Ges.') %>% 
+  # Kategroeien umbenennen
+  mutate(Code = ifelse(Code == 'Soziale Maßnahmen', 'Nicht-medizinsiche Maßnahmen', Code))
 
 ### abs
 txt2 %>% 
  kbl2(booktabs = T, digits=2, row.names = F, 
       col.names= c('Antwort', 'U5 [n]', 'U6 [n]','U7 [n]','U7a [n]','U8 [n]','U9 [n]', 'Ges. [n]')) %>% 
   kable_styling(latex_options = "HOLD_position", position = "left")
+```
 
+Prozentangaben beziehen sich auf die Anzahl von U-Untersuchungen mit Angabe von Freitexten zu sonstigen diagnostischen / therapeutischen Maßnahmen
+```{r sprache_freitext2, message=FALSE, warning=FALSE}
 ### rel
 txt2 %>% 
   mutate(U5 = U5 / 6 * 100, 
@@ -1830,6 +1843,23 @@ txt2 %>%
   kable_styling(latex_options = "HOLD_position", position = "left")
 ```
 
+
+Prozentangaben beziehen sich auf die Anzahl von U-Untersuchungen mit irgendwelchen diagnostischen / therapeutischen Maßnahmen
+(wenn Hinweise auf Sprach- und Sprechstörungen entweder im Rahmen der Anamnese oder im Rahmen der Orientierenden Beurteilung der Entwicklung angegeben wurden)
+```{r sprache_freitext3, message=FALSE, warning=FALSE}
+### rel
+txt2 %>% 
+  mutate(U5 = U5 / 34 * 100, 
+         U6 = U6 / 34 * 100,
+         U7 = U7 / 468 * 100,
+         U7a = U7a / 661 * 100,
+         U8 = U8 / 1014 * 100,
+         U9 = U9 / 1240 *100,
+         `Ges.` = `Ges.` / 3451 *100) %>% 
+  kbl2(booktabs = T, digits=1, row.names = F, 
+      col.names= c('Antwort', 'U5 [%]', 'U6 [%]','U7 [%]','U7a [%]','U8 [%]','U9 [%]', 'Ges. [%]')) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left")
+```
 
 
 ## 3.7	Information und Beratung der Eltern (U2–U9)
