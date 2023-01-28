@@ -1850,17 +1850,18 @@ Prozentangaben beziehen sich auf die Anzahl von U-Untersuchungen mit irgendwelch
 ```{r sprache_freitext3, message=FALSE, warning=FALSE}
 ### rel
 txt2 %>% 
-  mutate(U5 = U5 / 34 * 100, 
-         U6 = U6 / 34 * 100,
-         U7 = U7 / 468 * 100,
-         U7a = U7a / 661 * 100,
-         U8 = U8 / 1014 * 100,
-         U9 = U9 / 1240 *100,
-         `Ges.` = `Ges.` / 3451 *100) %>% 
+  mutate(U5 = U5 / 26 * 100, 
+         U6 = U6 / 32 * 100,
+         U7 = U7 / 436 * 100,
+         U7a = U7a / 618 * 100,
+         U8 = U8 / 966 * 100,
+         U9 = U9 / 1208 *100,
+         `Ges.` = `Ges.` / 3286 *100) %>% 
   kbl2(booktabs = T, digits=1, row.names = F, 
       col.names= c('Antwort', 'U5 [%]', 'U6 [%]','U7 [%]','U7a [%]','U8 [%]','U9 [%]', 'Ges. [%]')) %>% 
   kable_styling(latex_options = "HOLD_position", position = "left")
 ```
+
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 ### Prüfung, ob nicht-medizinische Maßnahmen & Kontrolle disjunkt
