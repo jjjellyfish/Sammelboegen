@@ -1,5 +1,5 @@
 ---
-title: "Auswertung Sammelbögen"
+title: "Auswertung U-Sammelbögen"
 output: 
   pdf_document:
     latex_engine: lualatex # Per default wird pdflatex verwendet. fontspec braucht allerdings lualatex.
