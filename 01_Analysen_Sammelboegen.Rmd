@@ -11,7 +11,6 @@ header-includes:
   - \setmainfont{Calibri}
   - \usepackage{float}
 geometry: margin = 2cm
-
 ---
 
 ```{r setup, include=FALSE}
@@ -120,7 +119,7 @@ ges_mehrf <- function(df){
 #### Sonstige ####
 # Wrapper-Funktion, um die decimal marks nicht jedes mal separat anzugeben 
 kbl2 = function(...) {
-  kableExtra::kbl(..., format.args = list(decimal.mark = ',', big.mark = "."))
+  kableExtra::kbl(..., format.args = list(decimal.mark = ',', big.mark = "."), linesep = "")
 }
 
 # NAs werden nicht in den Tabellen dargestellt
@@ -611,7 +610,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Größe, Form, Lichtreaktion der Pupillen auffällig? Nur ausgewertet, wenn Pupillenstatus geprüft
+Größe, Form, Lichtreaktion der Pupillen auffällig? Nur ausgewertet, wenn Pupillenstatus geprüft.
 ```{r Pupillen, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F12[u7a$F11==1])
 tbl2 <- tbl_janein(u8$F12[u8$F11==1])
@@ -630,7 +629,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen durchgeführt
+Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen durchgeführt.
 ```{r Strabismus, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1])
@@ -649,7 +648,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *mit* binokularem Autorefraktometer durchgeführt
+Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *mit* binokularem Autorefraktometer durchgeführt.
 ```{r Strabismus_plusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1 & u7a$F14==1])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1 & u8$F14==1])
@@ -668,7 +667,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *ohne* binokulares Autorefraktometer durchgeführt
+Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *ohne* binokulares Autorefraktometer durchgeführt.
 ```{r Strabismus_ohneplusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1 & u7a$F14==2])
 tbl2 <- tbl_janein(u8$F15[u8$F13==1 & u8$F14==2])
@@ -689,7 +688,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 
 
-Stereo-Test auffällig? Nur ausgewertet, wenn Streo-Test durchegführt
+Stereo-Test auffällig? Nur ausgewertet, wenn Stereo-Test durchegführt.
 ```{r Stereo_Test_Ergebnis, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F18[u7a$F16==1])
 tbl2 <- tbl_janein(u8$F18[u8$F16==1])
@@ -708,7 +707,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Stereo-Test auffällig? Nur ausgewertet, wenn Streo-Test *mit* binokularem Autorefraktometer durchegführt
+Stereo-Test auffällig? Nur ausgewertet, wenn Stereo-Test *mit* binokularem Autorefraktometer durchegführt.
 ```{r Stereo_Test_Ergebnis_plusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F18[u7a$F16==1 & u7a$F17==1])
 tbl2 <- tbl_janein(u8$F18[u8$F16==1 & u8$F17==1])
@@ -727,7 +726,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Stereo-Test auffällig? Nur ausgewertet, wenn Streo-Test *ohne* binokularem Autorefraktometer durchegführt
+Stereo-Test auffällig? Nur ausgewertet, wenn Stereo-Test *ohne* binokularem Autorefraktometer durchegführt.
 ```{r Stereo_Test_Ergebnis_ohneplusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F18[u7a$F16==1 & u7a$F17==2])
 tbl2 <- tbl_janein(u8$F18[u8$F16==1 & u8$F17==2])
@@ -747,7 +746,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   \linebreak
 
 
-Sehschwäche o. Rechts-Links-Differenz festgestellt. Nur ausgewertet wenn ein Sehtest mittels nonverbalem Formenwiedererkennungstest durchgeführt wurde.
+Sehschwäche o. Rechts-Links-Differenz festgestellt. Nur ausgewertet, wenn ein Sehtest mittels nonverbalem Formenwiedererkennungstest durchgeführt wurde.
 ```{r Sehschwaeche, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F20[u7a$F19==1])
 tbl2 <- tbl_janein(u8$F20[u8$F19==1])
@@ -846,10 +845,10 @@ tbl %>%
 ```
   \linebreak
 
-Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Sonstige Gründe gegen die Durchführung (Freitextantworten, als Nenner wird einerseits die Anzahl von Kindern, bei denen mind. ein sonstiger Grund genannt wurde (n = 219) und andererseist die Gesamtzahl von validen Antworten auf die Frage nach Gründen gegen die Durchführung einer Tonschwellenaudiometrie verwendet)
+Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Sonstige Gründe gegen die Durchführung (Freitextantworten, als Nenner wird einerseits die Anzahl von Kindern, bei denen mind. ein sonstiger Grund genannt wurde (n = 219) und andererseist die Gesamtzahl von validen Antworten auf die Frage nach Gründen gegen die Durchführung einer Tonschwellenaudiometrie verwendet).
 
 ```{r Audiometrie_Gruende_Freitexte, echo=FALSE, message=FALSE, warning=FALSE}
-tbl <- read_xlsx('02_Freitexte/Freitexte_GruendeAudiometrie_CodiersystemMAXQDA_grb.xlsx', sheet='R_input')
+tbl <- read_xlsx('O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/02_Freitexte/Freitexte_GruendeAudiometrie_CodiersystemMAXQDA_grb.xlsx', sheet='R_input')
 
 tbl <- tbl %>% mutate(rownr=as.character(row_number())) %>% 
   arrange(match(rownr, c('1', '3', '2', '4', '5', '7', '9', '8', '6', '10', '11', '12'))) %>% 
@@ -902,7 +901,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 #### 3.2.2.4	Häufigkeit von Überweisungen
 
  \newline
-Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein auffälliger Befund angegeben wurde
+Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein auffälliger Befund angegeben wurde.
 ```{r Ueberweisungen_Audiometrie, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1])
 
@@ -919,7 +918,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein **erstmaliger** auffälliger Befund angegeben wurde
+Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein **erstmaliger** auffälliger Befund angegeben wurde.
 ```{r Ueberweisungen_Audiometrie_erstmalig, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1 & u8$F24==2])
 
@@ -934,7 +933,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und **bereits vorher** Anhaltspunkte für ein Störung des Hörvermögens bestanden
+Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und **bereits vorher** Anhaltspunkte für ein Störung des Hörvermögens bestanden.
 ```{r Ueberweisungen_Audiometrie_wiederholt, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F23[u8$F21==1 & u8$F22==1 & u8$F24==1])
 
@@ -972,7 +971,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 #### 3.3.2.2	Häufigkeit von Überweisungen 
  \newline
-Verweis zum Zahnarzt? alle ausgewertet
+Verweis zum Zahnarzt? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u6$F13)
 
@@ -987,7 +986,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
   \linebreak
-Verweis zum Zahnarzt? nur ausgewertet, wenn Auffälligkeiten an Zähnen oder der Schleimhaut angegeben wurden.
+Verweis zum Zahnarzt? Nur ausgewertet, wenn Auffälligkeiten an Zähnen oder der Schleimhaut angegeben wurden.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u6$F13[u6$F12==1])
 
@@ -1002,7 +1001,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
   \linebreak
-Verweis zum Zahnarzt? nur ausgewertet, wenn **keine** Auffälligkeiten an Zähnen oder der Schleimhaut angegeben wurden.
+Verweis zum Zahnarzt? Nur ausgewertet, wenn **keine** Auffälligkeiten an Zähnen oder der Schleimhaut angegeben wurden.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u6$F13[u6$F12==2])
 
@@ -1190,7 +1189,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
   \linebreak
 
-Überlappung: Bei Hinweisen in der Anamnese Hinweise auch in der Orientierenden Beurteilung der Entwicklung ?
+Überlappung: Bei Hinweisen in der Anamnese Hinweise auch in der Orientierenden Beurteilung der Entwicklung?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F13[u5$F12==1])
 tbl2 <- tbl_janein(u6$F15[u6$F14==1])
@@ -1253,7 +1252,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
   \linebreak
 
-Besteht erweiterter Beratungsbedarf zum Thema Sprache? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen entweder in der Anamnese oder in der Orientierenden Beurteilung der Entwicklung festgestellt wurden 
+Besteht erweiterter Beratungsbedarf zum Thema Sprache? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen entweder in der Anamnese oder in der Orientierenden Beurteilung der Entwicklung festgestellt wurden.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F14[u5$F12==1 | u5$F13==1])
 tbl2 <- tbl_janein(u6$F16[u6$F14==1 | u6$F15==1])
@@ -1284,7 +1283,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
   \linebreak
 
-Besteht erweiterter Beratungsbedarf zum Thema Sprache? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen in der Anamnese festgestellt wurden 
+Besteht erweiterter Beratungsbedarf zum Thema Sprache? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen in der Anamnese festgestellt wurden. 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F14[u5$F12==1])
 tbl2 <- tbl_janein(u6$F16[u6$F14==1])
@@ -1315,7 +1314,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
   \linebreak
 
-Besteht erweiterter Beratungsbedarf zum Thema Sprache? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen in der Orientierenden Beurteilung der Entwicklung festgestellt wurden 
+Besteht erweiterter Beratungsbedarf zum Thema Sprache? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen in der Orientierenden Beurteilung der Entwicklung festgestellt wurden. 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F14[u5$F13==1])
 tbl2 <- tbl_janein(u6$F16[u6$F15==1])
@@ -1346,7 +1345,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
   \linebreak
 
-Besteht erweiterter Beratungsbedarf zum Thema Sprache? Nur ausgewertet, wenn **keine** Hinweise auf Sprach- und Sprechstörungen weder in der Anamnese noch in der Orientierenden Beurteilung der Entwicklung festgestellt wurden 
+Besteht erweiterter Beratungsbedarf zum Thema Sprache? Nur ausgewertet, wenn **keine** Hinweise auf Sprach- und Sprechstörungen weder in der Anamnese noch in der Orientierenden Beurteilung der Entwicklung festgestellt wurden. 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F14[u5$F12==2 & u5$F13==2])
 tbl2 <- tbl_janein(u6$F16[u6$F14==2 & u6$F15==2])
@@ -1412,7 +1411,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
   \linebreak
 
-Bei Hinweisen auf Sprach- und Sprechstörungen: Diagnostische/therapeutische Maßnahmen eingeleitet? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen entweder in der Anamnese oder in der Orientierenden Beurteilung der Entwicklung festgestellt wurden
+Bei Hinweisen auf Sprach- und Sprechstörungen: Diagnostische/therapeutische Maßnahmen eingeleitet? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen entweder in der Anamnese oder in der Orientierenden Beurteilung der Entwicklung festgestellt wurden.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F15[u5$F12==1 | u5$F13==1])
 tbl2 <- tbl_janein(u6$F17[u6$F14==1 | u6$F15==1])
@@ -1443,7 +1442,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
   \linebreak
-Bei Hinweisen auf Sprach- und Sprechstörungen: Diagnostische/therapeutische Maßnahmen eingeleitet? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen in der Anamnese festgestellt wurden
+Bei Hinweisen auf Sprach- und Sprechstörungen: Diagnostische/therapeutische Maßnahmen eingeleitet? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen in der Anamnese festgestellt wurden.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F15[u5$F12==1])
 tbl2 <- tbl_janein(u6$F17[u6$F14==1])
@@ -1473,7 +1472,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
   \linebreak
-Bei Hinweisen auf Sprach- und Sprechstörungen: Diagnostische/therapeutische Maßnahmen eingeleitet? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen in der Orientierenden Beurteilung der Entwicklung festgestellt wurden
+Bei Hinweisen auf Sprach- und Sprechstörungen: Diagnostische/therapeutische Maßnahmen eingeleitet? Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen in der Orientierenden Beurteilung der Entwicklung festgestellt wurden.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F15[u5$F13==1])
 tbl2 <- tbl_janein(u6$F17[u6$F15==1])
@@ -1504,7 +1503,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
   \linebreak
- Diagnostische/therapeutische Maßnahmen eingeleitet? Nur ausgewertet, wenn **keine** Hinweise auf Sprach- und Sprechstörungen weder in der Anamnese noch in der Orientierenden Beurteilung der Entwicklung festgestellt wurden
+ Diagnostische/therapeutische Maßnahmen eingeleitet? Nur ausgewertet, wenn **keine** Hinweise auf Sprach- und Sprechstörungen weder in der Anamnese noch in der Orientierenden Beurteilung der Entwicklung festgestellt wurden.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F15[u5$F12==2 & u5$F13==2])
 tbl2 <- tbl_janein(u6$F17[u6$F14==2 & u6$F15==2])
@@ -1823,15 +1822,17 @@ txt2 <- txt2 %>%
 
 ### abs
 txt2 %>% 
+ mutate(across(U5:`Ges.`, ~replace_na(., 0))) %>% 
  kbl2(booktabs = T, digits=2, row.names = F, 
       col.names= c('Antwort', 'U5 [n]', 'U6 [n]','U7 [n]','U7a [n]','U8 [n]','U9 [n]', 'Ges. [n]')) %>% 
   kable_styling(latex_options = "HOLD_position", position = "left")
 ```
 
-Prozentangaben beziehen sich auf die Anzahl von U-Untersuchungen mit Angabe von Freitexten zu sonstigen diagnostischen / therapeutischen Maßnahmen
+Prozentangaben beziehen sich auf die Anzahl von U-Untersuchungen mit Angabe von Freitexten zu sonstigen diagnostischen / therapeutischen Maßnahmen.
 ```{r sprache_freitext2, message=FALSE, warning=FALSE}
 ### rel
 txt2 %>% 
+  mutate(across(U5:`Ges.`, ~replace_na(., 0))) %>% 
   mutate(U5 = U5 / 6 * 100, 
          U6 = U6 / 11 * 100,
          U7 = U7 / 222 * 100,
@@ -1846,10 +1847,11 @@ txt2 %>%
 
 
 Prozentangaben beziehen sich auf die Anzahl von U-Untersuchungen mit irgendwelchen diagnostischen / therapeutischen Maßnahmen
-(wenn Hinweise auf Sprach- und Sprechstörungen entweder im Rahmen der Anamnese oder im Rahmen der Orientierenden Beurteilung der Entwicklung angegeben wurden)
+(wenn Hinweise auf Sprach- und Sprechstörungen entweder im Rahmen der Anamnese oder im Rahmen der Orientierenden Beurteilung der Entwicklung angegeben wurden).
 ```{r sprache_freitext3, message=FALSE, warning=FALSE}
 ### rel
 txt2 %>% 
+  mutate(across(U5:`Ges.`, ~replace_na(., 0))) %>% 
   mutate(U5 = U5 / 26 * 100, 
          U6 = U6 / 32 * 100,
          U7 = U7 / 436 * 100,
@@ -2167,7 +2169,7 @@ Die Frage ist bereits im Abschnitt 3.7.2 ausgewertet
 
 ## 4.5	Aufwand für die Dokumentation 
 
-Anzahl genannter Zeitaufwände (eingeteilt in Kategorien) 
+Anzahl genannter Zeitaufwände (eingeteilt in Kategorien)
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 u2 <- u2 %>% mutate(F8_cat=case_when(F8 == 0 ~ as.character(NA), F8 < 1 ~ '<1', F8 < 2 ~ '>=1 & <2', 
                                      F8 < 5 ~ '>=2 & <5', F8 < 10 ~ '>=5 & <10', F8 >= 10 ~ '>=10'))
