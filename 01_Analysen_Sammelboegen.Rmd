@@ -1,5 +1,5 @@
 ---
-title: "Auswertung U-Sammelbögen"
+title: "Ergebnisse aus den U-Sammelbögen"
 output: 
   pdf_document:
     latex_engine: lualatex # Per default wird pdflatex verwendet. fontspec braucht allerdings lualatex.
@@ -180,7 +180,6 @@ tbl %>%
 
  \newline
 Inspektion (auf morphologische Auffälligkeiten) durchgeführt? 
-
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u2$F9)
 tbl2 <- tbl_janein(u3$F9)
@@ -196,7 +195,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-  \linebreak
+\pagebreak
 
 Prüfung im durchfallenden Licht durchgeführt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -491,7 +490,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-  \linebreak
+\pagebreak
 
 Hornhautreflexbildchen durchgeführt?
 ```{r Hornhautreflexbildchen, echo=FALSE, message=FALSE, warning=FALSE}
@@ -567,7 +566,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-  \linebreak
+\pagebreak
 
 Sehtest als monokulare Prüfung mittels nonverbalem Formenwiedererkennungstest durchgeführt?
 ```{r nonverbForm, echo=FALSE, message=FALSE, warning=FALSE}
@@ -646,7 +645,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-  \linebreak
+\pagebreak
 
 Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *mit* binokularem Autorefraktometer durchgeführt.
 ```{r Strabismus_plusoptix, echo=FALSE, message=FALSE, warning=FALSE}
@@ -724,7 +723,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-  \linebreak
+\pagebreak
 
 Stereo-Test auffällig? Nur ausgewertet, wenn Stereo-Test *ohne* binokularem Autorefraktometer durchegführt.
 ```{r Stereo_Test_Ergebnis_ohneplusoptix, echo=FALSE, message=FALSE, warning=FALSE}
@@ -845,7 +844,7 @@ tbl %>%
 ```
   \linebreak
 
-Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Sonstige Gründe gegen die Durchführung (Freitextantworten, als Nenner wird einerseits die Anzahl von Kindern, bei denen mind. ein sonstiger Grund genannt wurde (n = 219) und andererseist die Gesamtzahl von validen Antworten auf die Frage nach Gründen gegen die Durchführung einer Tonschwellenaudiometrie verwendet).
+Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Sonstige Gründe gegen die Durchführung (Freitextantworten, als Nenner wird einerseits die Anzahl von Kindern, bei denen mind. ein sonstiger Grund genannt wurde (n=219) und andererseist die Gesamtzahl von validen Antworten auf die Frage nach Gründen gegen die Durchführung einer Tonschwellenaudiometrie verwendet).
 
 ```{r Audiometrie_Gruende_Freitexte, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- read_xlsx('O:/U4951/Consulimus_Abschlussdatenlieferung/03_Sammelbögen/02_Freitexte/Freitexte_GruendeAudiometrie_CodiersystemMAXQDA_grb.xlsx', sheet='R_input')
@@ -881,7 +880,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-  \linebreak
+\pagebreak
 
 Bei auffälligem Befund: Gab es vor der heutigen Audiometrie bereits Anhaltspunkte für eine Störung des Hörvermögens? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein auffälliger Befund angegeben wurde. 
 ```{r Auffaelligkeiten_Audiometrie_erstmalig, echo=FALSE, message=FALSE, warning=FALSE}
@@ -1020,7 +1019,6 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 ### 3.5.2	Hinweise auf Sprach- und Sprechstörungen
 
- \newline
 Hinweise in der Anamnese?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F12)
@@ -1220,7 +1218,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 ### 3.5.5	Durchführung von Sprachberatung
- \newline
+
 Besteht erweiterter Beratungsbedarf zum Thema Sprache? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F14)
@@ -1378,7 +1376,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 ### 3.5.6	Diagnostische und therapeutische Maßnahmen
- \newline
+
 Diagnostische/therapeutische Maßnahmen eingeleitet? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u5$F15)
@@ -1775,7 +1773,7 @@ tmp %>%
 openxlsx::write.xlsx(tmp, file='05_Tabellen/Sprache_Massnahmen.xlsx')
 ```
 
- \newline
+\pagebreak
 Analyse von Freitexteintragungen unter Sonstige. Nur ausgewertet, wenn Hinweise auf Sprach- und Sprechstörungen entweder im Rahmen der Anamnese oder im Rahmen der Orientierenden Beurteilung der Entwicklung angegeben, die Frage nach Einleitung von diagnostischen oder therapeutischen Maßnahmen bejaht und sonstige diagnostische/therapeutische Maßnahmen angekreuzt wurde. 
 ```{r sprache_freitext, message=FALSE, warning=FALSE}
 ### Fälle filtern
@@ -1886,11 +1884,10 @@ txt2 %>%
 ```
 
 
-
+\pagebreak
 ## 3.7	Information und Beratung der Eltern (U2–U9)
 
 ### 3.7.2	Feststellung von erweitertem Beratungsbedarf (U2–U9)
- \newline
 Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt *Beratung* angekreuzt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_kont(u2$F5)
@@ -2249,12 +2246,12 @@ tbl %>%
   kable_styling(latex_options = "HOLD_position", position = "left") # Zwingt die Tabelle an die Position im Text
 ```
 
+  \linebreak
 
 ## 4.6	Nutzung der Teilnahmekarte
 
 ### 4.6.1	Ausfüllen der Teilnahmekarte
 
- \newline
 Teilnahmekarte ausgefüllt?
 ```{r teilnahmekarte, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u2$F7)
