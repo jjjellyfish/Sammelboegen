@@ -169,6 +169,49 @@ tbl %>%
 ```
 
 
+```{r eval=FALSE, include=FALSE}
+tbl <- bind_rows(tbl1, tbl2, tbl3, tbl4, tbl5, tbl6, tbl7, tbl8, tbl9)
+
+tbl <- tbl %>% 
+  group_by(id) %>% 
+  summarize(n=n())
+
+psych::describe(tbl$n)
+```
+
+
+```{r}
+u2$F14 <- ifelse(u2$F14==0, 99, u2$F14)
+tbl1 <- tbl_janein(u2$F14)
+u3$F14 <- ifelse(u3$F14==0, 99, u3$F14)
+tbl2 <- tbl_janein(u3$F14)
+u4$F12 <- ifelse(u4$F12==0, 99, u4$F12)
+tbl3 <- tbl_janein(u4$F12)
+u5$F21 <- ifelse(u5$F21==0, 99, u5$F21)
+tbl4 <- tbl_janein(u5$F21)
+u6$F23 <- ifelse(u6$F23==0, 99, u6$F23)
+tbl5 <- tbl_janein(u6$F23)
+u7$F21 <- ifelse(u7$F21==0, 99, u7$F21)
+tbl6 <- tbl_janein(u7$F21)
+u7a$F30 <- ifelse(u7a$F30==0, 99, u7a$F30)
+tbl7 <- tbl_janein(u7a$F30)
+u8$F41 <- ifelse(u8$F41==0, 99, u8$F41)
+tbl8 <- tbl_janein(u8$F41)
+u9$F30 <- ifelse(u9$F30==0, 99, u9$F30)
+tbl9 <- tbl_janein(u9$F30)
+tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3], tbl7[2:3], tbl8[2:3], tbl9[2:3])
+
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 9))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U2'=2, 'U3'=2,'U4'=2, 'U5'=2,'U6'=2, 
+                     'U7'=2, 'U7a'=2, 'U8'=2, 'U9'=2,'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
+  row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+```
+
 
 # 3. Ergebnisse der Evaluation von Abschnitt B (Früherkennungsuntersuchungen) der Kinder-Richtlinie 
 
@@ -440,7 +483,7 @@ p <- tmp %>%
         legend.text = element_text(color="#00386a", family = "Verdana", size = 14),
         plot.title = element_blank())
 
-bmp(file="04_Abbildungen/Transilluminationsunterschiede.bmp", width = 750, height = 500, type="cairo")
+bmp(file="04_Abbildungen/Transilluminationsunterschiede.bmp", width = 750, height = 500, type="windows")
 print(p)
 dev.off()
 
