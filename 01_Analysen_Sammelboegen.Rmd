@@ -139,11 +139,11 @@ tbl_kont <-function(x) {
 }
 ```
 
-# 2. Methodik
+# 3. Rücklauf der Erhebungen und Stichprobencharakterisierung
 
-## 2.2 Erhebung in den Arztpraxen
+## 3.1 Erhebungen in den Arztpraxen
 
-### 2.2.2 Arztfragebogen und U-Sammelbögen
+### 3.1.1 Arztfragebogen und U-Sammelbögen
 
 Anzahl untersuchter Kinder nach U-Untersuchung
 ```{r n, echo=FALSE, message=FALSE, warning=FALSE}
@@ -180,7 +180,13 @@ psych::describe(tbl$n)
 ```
 
 
-```{r}
+## 3.2 Erhebungen bei den Eltern
+
+### 3.2.1 Elternfragebogen
+
+Studienunterlagen an Eltern ausgeteilt - Kreuz gesetzt 
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 u2$F14 <- ifelse(u2$F14==0, 99, u2$F14)
 tbl1 <- tbl_janein(u2$F14)
 u3$F14 <- ifelse(u3$F14==0, 99, u3$F14)
@@ -203,23 +209,30 @@ tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3], tbl4[2:3], tbl5[2:3], tbl6[2:3], tb
 
 tbl <- ges_janein(tbl)
 tbl$x <- rownames_janein
-names(tbl) <- c('Antwort', rep(c('n', '%'), 9))
+names(tbl) <- c('Antwort','U2 [n]','U2 [%]','U3 [n]','U3 [%]','U4 [n]','U4 [%]','U5 [n]','U5 [%]','U6 [n]','U6 [%]','U7 [n]','U7 [%]', 'U7a [n]','U7a [%]','U8 [n]','U8 [%]','U9 [n]','U9 [%]', 'Ges. [n]', 'Ges. [%]')
 
-tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
-  add_header_above(c('', 'U2'=2, 'U3'=2,'U4'=2, 'U5'=2,'U6'=2, 
-                     'U7'=2, 'U7a'=2, 'U8'=2, 'U9'=2,'Ges.'=2)) %>% 
+# absolute Tabelle
+tbl %>% dplyr::select(Antwort, contains('[n]')) %>%
+  kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   kable_styling(latex_options = "HOLD_position", position = "left") %>% 
+  row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+
+# relative Tabelle
+tbl %>% dplyr::select(Antwort, contains('[%]')) %>% 
+  filter(Antwort %in% c("ja", "nein", "valides n")) %>% 
+  kbl2(booktabs = T, digits=1, align=align_string(tbl)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
 
-# 3. Ergebnisse der Evaluation von Abschnitt B (Früherkennungsuntersuchungen) der Kinder-Richtlinie 
+# 4. Ergebnisse der Evaluation von Abschnitt B (Früherkennungsuntersuchungen) der Kinder-Richtlinie 
 
-## 3.1	Untersuchung der Augen (U2-U9)
+## 4.1	Untersuchung der Augen (U2-U9)
 
-### 3.1.2 Inspektion und Prüfung im durchfallenden Licht (U2 und U3)
+### 4.1.2 Inspektion und Prüfung im durchfallenden Licht (U2 und U3)
 
-#### 3.1.2.1 Häufigkeit der Durchführung 
+#### 4.1.2.1 Häufigkeit der Durchführung 
 
  \newline
 Inspektion (auf morphologische Auffälligkeiten) durchgeführt? 
@@ -238,7 +251,6 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-\pagebreak
 
 Prüfung im durchfallenden Licht durchgeführt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -258,7 +270,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-#### 3.1.2.2	Häufigkeit der Feststellung von Auffälligkeiten
+#### 4.1.2.2	Häufigkeit der Feststellung von Auffälligkeiten
 
  \newline
 Morphologische Auffälligkeiten festgestellt? (Feststellung durch Inspektion). Ausgewertet nur dann, wenn eine Inspektion durchgeführt wurde <br>
@@ -277,7 +289,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-  \linebreak
+\pagebreak
 
 Transilluminationsauffälligkeiten festgestellt? (Feststellung durch Prüfung im durchfallenden Licht)
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -296,7 +308,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-##### 3.1.2.3	Häufigkeit von Überweisungen
+##### 4.1.2.3	Häufigkeit von Überweisungen
 
  \newline
 Überweisung zum Augenarzt? Alle ausgewertet
@@ -333,9 +345,9 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-### 3.1.3	Brückner-Test (U4–U7)
+### 4.1.3	Brückner-Test (U4–U7)
 
-#### 3.1.3.1	Häufigkeit der Durchführung
+#### 4.1.3.1	Häufigkeit der Durchführung
 
  \newline
 Brückner-Test durchgeführt?
@@ -378,7 +390,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 
 
-#### 3.1.3.2	Häufigkeit der Feststellung von Auffälligkeiten
+#### 4.1.3.2	Häufigkeit der Feststellung von Auffälligkeiten
 
  \newline
 Transilluminationsunterschied festgestellt? Nur ausgewertet, wenn ein Brückner-Test durchgeführt wurde.
@@ -490,11 +502,11 @@ dev.off()
 ```
 
 
+\pagebreak
 
+### 4.1.4	Inspektion, Pupillenstatus, Hornhautreflexbildchen, Stereo-Test und Formenwiedererkennungstest (U7a–U9)
 
-### 3.1.4	Inspektion, Pupillenstatus, Hornhautreflexbildchen, Stereo-Test und Formenwiedererkennungstest (U7a–U9)
-
-#### 3.1.4.1	Häufigkeit der Durchführung 
+#### 4.1.4.1	Häufigkeit der Durchführung 
 
  \newline
 Inspektion durchgeführt?
@@ -533,7 +545,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-\pagebreak
+  \linebreak
 
 Hornhautreflexbildchen durchgeführt?
 ```{r Hornhautreflexbildchen, echo=FALSE, message=FALSE, warning=FALSE}
@@ -609,7 +621,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-\pagebreak
+  \linebreak
 
 Sehtest als monokulare Prüfung mittels nonverbalem Formenwiedererkennungstest durchgeführt?
 ```{r nonverbForm, echo=FALSE, message=FALSE, warning=FALSE}
@@ -630,7 +642,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
 
 
-#### 3.1.4.2	Häufigkeit der Feststellung von Auffälligkeiten 
+#### 4.1.4.2	Häufigkeit der Feststellung von Auffälligkeiten 
 
  \newline
 morphologische Auffälligkeit oder Nystagmus oder Kopffehlhaltung? Nur ausgewertet, wenn Inspektion durchgeführt. 
@@ -650,7 +662,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-  \linebreak
+\pagebreak
 
 Größe, Form, Lichtreaktion der Pupillen auffällig? Nur ausgewertet, wenn Pupillenstatus geprüft.
 ```{r Pupillen, echo=FALSE, message=FALSE, warning=FALSE}
@@ -688,8 +700,8 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-\pagebreak
-
+  \linebreak
+  
 Strabismus festgestellt? Nur ausgeweret, wenn Hornhautreflexbildchen *mit* binokularem Autorefraktometer durchgeführt.
 ```{r Strabismus_plusoptix, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F15[u7a$F13==1 & u7a$F14==1])
@@ -726,9 +738,8 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-  \linebreak
 
-
+\pagebreak
 
 Stereo-Test auffällig? Nur ausgewertet, wenn Stereo-Test durchegführt.
 ```{r Stereo_Test_Ergebnis, echo=FALSE, message=FALSE, warning=FALSE}
@@ -766,7 +777,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-\pagebreak
+  \linebreak
 
 Stereo-Test auffällig? Nur ausgewertet, wenn Stereo-Test *ohne* binokularem Autorefraktometer durchegführt.
 ```{r Stereo_Test_Ergebnis_ohneplusoptix, echo=FALSE, message=FALSE, warning=FALSE}
@@ -787,7 +798,6 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 
   \linebreak
 
-
 Sehschwäche o. Rechts-Links-Differenz festgestellt. Nur ausgewertet, wenn ein Sehtest mittels nonverbalem Formenwiedererkennungstest durchgeführt wurde.
 ```{r Sehschwaeche, echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_janein(u7a$F20[u7a$F19==1])
@@ -806,11 +816,11 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-## 3.2	Untersuchung des Hörvermögens (U8)
+## 4.2	Untersuchung des Hörvermögens (U8)
 
-### 3.2.2	Hörtest mittels Screeningaudiometrie (U8)
+### 4.2.2	Hörtest mittels Screeningaudiometrie (U8)
 
-#### 3.2.2.1	Häufigkeit der Durchführung 
+#### 4.2.2.1	Häufigkeit der Durchführung 
 
  \newline
 Prüfung mittels Tonschwellenaudiometrie durchgeführt?
@@ -828,7 +838,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 <br>
 
-#### 3.2.2.2	Gründe keine Audiometrie durchzuführen
+#### 4.2.2.2	Gründe keine Audiometrie durchzuführen
 
  \newline
 Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Warum nicht? (Mehrfachnennungen möglich). Nur ausgewertet, wenn keine Prüfung mittels Tonschwellenaudiometrie durchgeführt.
@@ -885,7 +895,8 @@ tbl %>%
        col.names=c("Grund", "n", "\\% U-Untersuchungen")) %>%
     kable_styling(latex_options = "HOLD_position", position = "left")
 ```
-  \linebreak
+
+\pagebreak
 
 Falls Prüfung mittels Tonschwellenaudiometrie NICHT durchgeführt: Sonstige Gründe gegen die Durchführung (Freitextantworten, als Nenner wird einerseits die Anzahl von Kindern, bei denen mind. ein sonstiger Grund genannt wurde (n=219) und andererseist die Gesamtzahl von validen Antworten auf die Frage nach Gründen gegen die Durchführung einer Tonschwellenaudiometrie verwendet).
 
@@ -905,7 +916,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl), digits=1,
 ```
 
 
-#### 3.2.2.3	Häufigkeit der Feststellung von Auffälligkeiten
+#### 4.2.2.3	Häufigkeit der Feststellung von Auffälligkeiten
 
  \newline
 Tonschwellenaudiometrie mit auffälligem Befund? Nur ausgewertet, wenn eine Prüfung mittels Tonschwellenaudiometrie durchgeführt wurde. 
@@ -923,8 +934,6 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-\pagebreak
-
 Bei auffälligem Befund: Gab es vor der heutigen Audiometrie bereits Anhaltspunkte für eine Störung des Hörvermögens? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein auffälliger Befund angegeben wurde. 
 ```{r Auffaelligkeiten_Audiometrie_erstmalig, echo=FALSE, message=FALSE, warning=FALSE}
 tbl <- tbl_janein(u8$F24[u8$F21==1 & u8$F22==1])
@@ -940,7 +949,8 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-#### 3.2.2.4	Häufigkeit von Überweisungen
+\pagebreak
+#### 4.2.2.4	Häufigkeit von Überweisungen
 
  \newline
 Bei auffälligem Befund: Überweisung an HNO-Arzt oder Pädaudiologen? Nur ausgewertet, wenn eine Tonschwellenaudiometrie durchgeführt und ein auffälliger Befund angegeben wurde.
@@ -989,12 +999,13 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
+\pagebreak
 
-## 3.3	Untersuchung der Zähne und der Schleimhaut (U6)
+## 4.3	Untersuchung der Zähne und der Schleimhaut (U6)
 
-### 3.3.2	Auffälligkeiten an Zähnen und Schleimhaut (U6)
+### 4.3.2	Auffälligkeiten an Zähnen und Schleimhaut (U6)
 
-#### 3.3.2.1	Häufigkeit der Feststellung von Auffälligkeiten
+#### 4.3.2.1	Häufigkeit der Feststellung von Auffälligkeiten
 
  \newline
 Auffälligkeiten an Zähnen oder der Schleimhaut festgestellt?
@@ -1011,7 +1022,7 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
   row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
 ```
 
-#### 3.3.2.2	Häufigkeit von Überweisungen 
+#### 4.3.2.2	Häufigkeit von Überweisungen 
  \newline
 Verweis zum Zahnarzt? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1058,9 +1069,9 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
-## 3.5	Untersuchung auf Sprach- und Sprechstörungen (U5–U9)
+## 4.5	Untersuchung auf Sprach- und Sprechstörungen (U5–U9)
 
-### 3.5.2	Hinweise auf Sprach- und Sprechstörungen
+### 4.5.2	Hinweise auf Sprach- und Sprechstörungen
 
 Hinweise in der Anamnese?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1260,7 +1271,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
 
-### 3.5.5	Durchführung von Sprachberatung
+### 4.5.5	Durchführung von Sprachberatung
 
 Besteht erweiterter Beratungsbedarf zum Thema Sprache? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1418,7 +1429,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
   \linebreak
 
 
-### 3.5.6	Diagnostische und therapeutische Maßnahmen
+### 4.5.6	Diagnostische und therapeutische Maßnahmen
 
 Diagnostische/therapeutische Maßnahmen eingeleitet? Alle ausgewertet.
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -1928,9 +1939,9 @@ txt2 %>%
 
 
 \pagebreak
-## 3.7	Information und Beratung der Eltern (U2–U9)
+## 4.7	Information und Beratung der Eltern (U2–U9)
 
-### 3.7.2	Feststellung von erweitertem Beratungsbedarf (U2–U9)
+### 4.7.2	Feststellung von erweitertem Beratungsbedarf (U2–U9)
 Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt *Beratung* angekreuzt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 tbl1 <- tbl_kont(u2$F5)
@@ -2043,9 +2054,9 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
 
-# 4. Ergebnisse der Evaluation von Anlage 1 (Untersuchungsheft für Kinder) der Kinder-Richtlinie
+# 5. Ergebnisse der Evaluation von Anlage 1 (Untersuchungsheft für Kinder) der Kinder-Richtlinie
 
-## 4.2	Vorliegen des Gelben Heftes bei U-Untersuchungen
+## 5.2	Vorliegen des Gelben Heftes bei U-Untersuchungen
 
 Lag das Gelbe Heft bei der Untersuchung vor?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -2082,11 +2093,11 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 
-## 4.3	Häufigkeit der Dokumentation im Gelben Heft
+## 5.3	Häufigkeit der Dokumentation im Gelben Heft
 
-### 4.3.1	Dokumentation von Auffälligkeiten 
+### 5.3.1	Dokumentation von Auffälligkeiten 
 
-#### 4.3.1.1 Auffälligkeiten im Abschnitt *Untersuchung* insgesamt 
+#### 5.3.1.1 Auffälligkeiten im Abschnitt *Untersuchung* insgesamt 
 
  \newline
 Wie viele Auffälligkeiten wurden im Abschnitt *Untersuchung* angekreuzt?
@@ -2159,7 +2170,7 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 
 
 
-#### 4.3.1.3	Auffälligkeiten im Abschnitt *Ergebnisse*
+#### 5.3.1.3	Auffälligkeiten im Abschnitt *Ergebnisse*
 
  \newline
 Eintrag bei „Auffälligkeiten zur Beobachtung“ im Abschnitt *Ergebnisse*?
@@ -2195,9 +2206,9 @@ tbl %>% dplyr::select(Antwort, contains('[%]')) %>%
 ```
 
 
-### 4.3.2	Dokumentation von erweitertem Beratungsbedarf 
+### 5.3.2	Dokumentation von erweitertem Beratungsbedarf 
 
-#### 4.3.2.1	Erweiterter Beratungsbedarf insgesamt
+#### 5.3.2.1	Erweiterter Beratungsbedarf insgesamt
  \newline
 Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt *Beratung* angekreuzt?
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -2207,7 +2218,7 @@ Wie viele Beratungsthemen mit erweitertem Beratungsbedarf wurden im Abschnitt *B
 Die Frage ist bereits im Abschnitt 3.7.2 ausgewertet
 
 
-## 4.5	Aufwand für die Dokumentation 
+## 5.5	Aufwand für die Dokumentation 
 
 Anzahl genannter Zeitaufwände (eingeteilt in Kategorien)
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
@@ -2291,9 +2302,9 @@ tbl %>%
 
   \linebreak
 
-## 4.6	Nutzung der Teilnahmekarte
+## 5.6	Nutzung der Teilnahmekarte
 
-### 4.6.1	Ausfüllen der Teilnahmekarte
+### 5.6.1	Ausfüllen der Teilnahmekarte
 
 Teilnahmekarte ausgefüllt?
 ```{r teilnahmekarte, echo=FALSE, message=FALSE, warning=FALSE}
