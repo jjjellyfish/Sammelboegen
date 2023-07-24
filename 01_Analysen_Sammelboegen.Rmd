@@ -641,6 +641,206 @@ tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
 ```
 
 
+  \linebreak
+
+Anteil der Kinder in der U7a, U8 bzw. U9, bei denen keiner, einer, zwei, drei, etc. der Sehtests durchgeführt wurden.
+```{r message=FALSE, warning=FALSE}
+augen_recode <- function(x) {
+  case_when(
+    x == 1 ~ 1, 
+    x == 2 ~ 0,
+    x == 0 ~ as.numeric(NA)
+  )
+}
+
+U7a_tmp <- u7a %>% 
+  mutate_at(vars(F9, F11, F13, F16, F19), augen_recode) %>% 
+  select(X, F9, F11, F13, F16, F19) %>% 
+  group_by(X) %>%
+  mutate(sum_test_u7a=sum(F9 + F11 + F13 + F16 + F19, na.rm=TRUE),
+         sum_test_u7a=ifelse(is.na(F9)|is.na(F11)|is.na(F13)|is.na(F16)|is.na(F19), 
+                             NA, sum_test_u7a)) %>% 
+  ungroup() %>%
+  count(sum_test_u7a)
+  
+U8_tmp <- u8 %>% 
+  mutate_at(vars(F9, F11, F13, F16, F19), augen_recode) %>% 
+  select(X, F9, F11, F13, F16, F19) %>% 
+  group_by(X) %>%
+  mutate(sum_test_u8=sum(F9 + F11 + F13 + F16 + F19, na.rm=TRUE),
+         sum_test_u8=ifelse(is.na(F9)|is.na(F11)|is.na(F13)|is.na(F16)|is.na(F19), 
+                             NA, sum_test_u8)) %>%   
+  ungroup() %>%
+  count(sum_test_u8)
+
+U9_tmp <- u9 %>% 
+  mutate_at(vars(F9, F11, F13, F16, F19), augen_recode) %>% 
+  select(X, F9, F11, F13, F16, F19) %>% 
+  group_by(X) %>%
+  mutate(sum_test_u9=sum(F9 + F11 + F13 + F16 + F19, na.rm=TRUE),
+         sum_test_u9=ifelse(is.na(F9)|is.na(F11)|is.na(F13)|is.na(F16)|is.na(F19), 
+                             NA, sum_test_u9)) %>%   
+  ungroup() %>%
+  count(sum_test_u9)
+
+tbl <- bind_cols(U7a_tmp, U8_tmp[2], U9_tmp[2]) 
+names(tbl) <- c('tests', 'u7a', 'u8', 'u9')
+
+# fehlende erstmal extrahieren
+tmp <- tbl %>% filter(is.na(tests))
+tbl <- tbl %>% filter(!is.na(tests))
+
+tbl <- tbl %>%
+  group_by(tests)%>% 
+  mutate(ges = sum(u7a, u8, u9)) %>% 
+  ungroup() %>% 
+  mutate(u7a_perc = u7a / sum(u7a) * 100, 
+         u8_perc = u8 / sum(u8) * 100, 
+         u9_perc = u9 / sum(u9) * 100, 
+         ges_perc = ges / sum(ges) * 100) %>% 
+  select(tests, contains('u7a'), contains('u8'), contains('u9'), contains('ges')) %>% 
+  janitor::adorn_totals('row', name='valides n')
+
+
+# fehlende Werte manuell ergänzen
+tbl[nrow(tbl) + 1,] <- 
+  c('fehlend', tmp[2], NA, tmp[3], NA, tmp[4], NA, sum(tmp[2]+ tmp[3]+ tmp[4]), NA)
+
+tbl[nrow(tbl) + 1,] <- 
+  list('gesamt n', 5290, NA, 5349, NA, 5002, NA, 15641, NA)
+
+names(tbl) <- c('Anzahl Sehtests', rep(c('n', '%'), 4))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl), digits=1) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
+  row_spec(6, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+```
+
+  \linebreak
+
+Anteil der Kinder in der U7a, U8 bzw. U9, bei denen die Hornhautreflexbildchen *nicht* geprüft wurden, aber der Stereo-Test oder der Formenwiedererkennungstest durchgeführt wurden. Nur ausgewertet, wenn Hornhautreflexbildchen *nicht* geprüft wurden.
+```{r message=FALSE, warning=FALSE}
+u7a <- u7a %>% mutate(test = ifelse(F16 == 1 | F19 == 1, '1', '2'), 
+                      test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u8 <- u8 %>% mutate(test = ifelse(F16 == 1 | F19 == 1, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u9 <- u9 %>% mutate(test = ifelse(F16 == 1 | F19 == 1, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+
+
+tbl1 <- tbl_janein(u7a$test[u7a$F13 == 2])
+tbl2 <- tbl_janein(u8$test[u8$F13 == 2])
+tbl3 <- tbl_janein(u9$test[u9$F13 == 2])
+tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
+
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
+  row_spec(2, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+```
+
+
+  \linebreak
+
+Anteil der Kinder in der U7a, U8 bzw. U9, bei denen Stereo-Test UND Formenwiedererkennungstest durchgeführt wurden, NUR der Stereo-Test, NUR der Formenwiedererkennungstest oder KEINER von beiden Tests durchegführt wurde
+```{r message=FALSE, warning=FALSE}
+u7a <- u7a %>% mutate(test = ifelse(F16 == 1 & F19 == 1, '1', '2'), 
+                      test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u8 <- u8 %>% mutate(test = ifelse(F16 == 1 & F19 == 1, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u9 <- u9 %>% mutate(test = ifelse(F16 == 1 & F19 == 1, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+
+tbl1 <- tbl_janein(u7a$test)
+tbl2 <- tbl_janein(u8$test)
+tbl3 <- tbl_janein(u9$test)
+tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
+
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
+
+tmp1 <- tbl
+
+#***************************
+u7a <- u7a %>% mutate(test = ifelse(F16 == 1 & F19 == 2, '1', '2'), 
+                      test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u8 <- u8 %>% mutate(test = ifelse(F16 == 1 & F19 == 2, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u9 <- u9 %>% mutate(test = ifelse(F16 == 1 & F19 == 2, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+
+tbl1 <- tbl_janein(u7a$test)
+tbl2 <- tbl_janein(u8$test)
+tbl3 <- tbl_janein(u9$test)
+tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
+
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
+
+tmp2 <- tbl
+
+#*****************
+u7a <- u7a %>% mutate(test = ifelse(F16 == 2 & F19 == 1, '1', '2'), 
+                      test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u8 <- u8 %>% mutate(test = ifelse(F16 == 2 & F19 == 1, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u9 <- u9 %>% mutate(test = ifelse(F16 == 2 & F19 == 1, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+
+tbl1 <- tbl_janein(u7a$test)
+tbl2 <- tbl_janein(u8$test)
+tbl3 <- tbl_janein(u9$test)
+tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
+
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
+
+tmp3 <- tbl
+
+
+#*******************
+u7a <- u7a %>% mutate(test = ifelse(F16 == 2 & F19 == 2, '1', '2'), 
+                      test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u8 <- u8 %>% mutate(test = ifelse(F16 == 2 & F19 == 2, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+u9 <- u9 %>% mutate(test = ifelse(F16 == 2 & F19 == 2, '1', '2'), 
+                    test = ifelse(F16 == 0 | F19 == 0, NA, test))
+
+tbl1 <- tbl_janein(u7a$test)
+tbl2 <- tbl_janein(u8$test)
+tbl3 <- tbl_janein(u9$test)
+tbl <- bind_cols(tbl1, tbl2[2:3], tbl3[2:3])
+
+tbl <- ges_janein(tbl)
+tbl$x <- rownames_janein
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
+
+tmp4 <- tbl
+
+tbl <- bind_rows(tmp1[1,], tmp2[1,], tmp3[1,], tmp4[1,], tmp1[3:5,])
+tbl$Antwort <- c('beide Tests', 'Stereo Test', 'Formenwiedererkennungstest', 'keiner von beiden Tests', 'valides n', 'fehlend', 'gesamt n')
+
+names(tbl) <- c('Antwort', rep(c('n', '%'), 4))
+
+tbl %>% kbl2(booktabs = T, centering=F, align=align_string(tbl)) %>%
+  add_header_above(c('', 'U7a'=2, 'U8'=2, 'U9'=2, 'Ges.'=2)) %>% 
+  kable_styling(latex_options = "HOLD_position", position = "left") %>% 
+  row_spec(4, extra_css = "border-bottom: 1px solid", hline_after=TRUE)
+```
+
+
+
+
+
+
 
 #### 4.1.4.2	Häufigkeit der Feststellung von Auffälligkeiten 
 
